@@ -5,7 +5,7 @@ import { useEffect,useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 
-export default function GamesDetails2() {
+export default function GameDetailsBrain2() {
   const { id } = useParams();
   const [game, setGames] = useState(null); 
   const navigate = useNavigate();

@@ -55,16 +55,35 @@ const handlesendtostore = async (gameId) => {
 
     if (!res.ok) throw new Error("Network response was not ok");
 
-    // فقط لقراءة الرسالة من السيرفر (اختياري)
     await res.json();
 
-    // التنقّل بعد نجاح العملية
-    navigate(`/Gamestotest/${gameId}`);
+    navigate("/Gamestotest");
 
   } catch (err) {
     console.error(err);
   }
 };
+const handleReject = async(gameId)=>{
+  try {
+      const res = await fetch(
+      `http://10.31.42.133:8000/api/braintester/games/${gameId}/chnagestatus`,
+      {
+         method: "PUT",
+        headers: { "Content-Type": "application/json" },
+  }
+  );
+    if (!res.ok) throw new Error("Network response was not ok");
+
+    await res.json();
+
+    navigate(`//${gameId}`);
+
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
 
 
   return (
@@ -127,7 +146,6 @@ const handlesendtostore = async (gameId) => {
               {game.category && <p className="text-lg">{game.category.name}</p>}
             </div>
             
-            {/* Price (Example placeholder) */}
             <div>
               <p className="text-cyan-400 font-semibold text-sm uppercase tracking-wide">
                 Price
@@ -145,7 +163,7 @@ const handlesendtostore = async (gameId) => {
           </div>
           
           <div className="pt-6">
-            <motion.a
+            {/* <motion.a
               href={`http://10.31.42.133:8000/files/${game.versions?.[0]?.file_path}`} 
               download
               whileHover={{ scale: 1.05 }}
@@ -153,13 +171,20 @@ const handlesendtostore = async (gameId) => {
               className="inline-block px-10 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-xl shadow-md transition-all"
             >
               ⬇️ Download Game
-            </motion.a>
+            </motion.a> */}
             
+            <button
+              onClick={() => handleReject(game.id)}
+                className="w-full py-3 mt-4 bg-green-500 text-white font-semibold rounded-xl shadow-md hover:bg-green-600 transition-colors"
+            >
+              Reject
+            </button>
+
             <button
               onClick={() => handlesendtostore(game.id)}
               className="w-full py-3 mt-4 bg-green-500 text-white font-semibold rounded-xl shadow-md hover:bg-green-600 transition-colors"
             >
-              ✅ Send to Store
+               Send to Store
             </button>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Gamelist from "../../components/Gameslist";
-const TesterStorage = () => {
+const TesterStore = () => {
   const [games, setGames] = useState([]);
   const navigate = useNavigate();
 
@@ -29,4 +29,4 @@ const TesterStorage = () => {
 
 
 
-export default TesterStorage;
+export default TesterStore;

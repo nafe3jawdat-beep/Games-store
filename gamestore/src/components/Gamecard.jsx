@@ -12,7 +12,7 @@ export default function GameCard({ game, onDetails }) {
     >
       <div className="h-[140px] overflow-hidden">
         <img
-            src={game.image}
+             src={`http://10.31.42.133:8000/images/${game.image}`}
             alt={game.title}
 
 

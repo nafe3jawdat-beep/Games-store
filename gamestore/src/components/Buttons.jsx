@@ -30,7 +30,6 @@ function Buttons({ game }) {
     }
   };
 
-  // الشرط حسب حالة اللعبة
   if (game.status === "uploaded") {
     return (
       <div className="space-y-3 mt-6">

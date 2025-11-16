@@ -1,6 +1,5 @@
-import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-// import { useEffect,useState } from "react";
+import { useEffect,useState } from "react";
 /* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
@@ -8,68 +7,26 @@ import Buttons from "../../components/Buttons";
 
 export default function GamesDetails2() {
   const { id } = useParams();
-
-  // const [game, setGames] = useState(null); 
+  const [game, setGames] = useState(null); 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   fetch(`http://10.31.42.133:8000/api/braintester/games/${id}/uploaded`)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       if (data && data.game) {
-  //         setGames(data.game);
-  //       } else {
-  //         setGames(false); 
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.error(err);
-  //       setGames(false); 
-  //     });
-  // }, [id]);
-const game = [
-  {
-    id: 1,
-    developer_id: 1,
-    title: "PUBG",
-    slug: "pubg",
-    image: "../imges/download.jpg",
-    category: {
-      id: 6,
-      name: "Strategy",
-      slug: "strategy",
-      created_at: "2025-11-11T18:04:38.000000Z"
-    },
-    short_description: "Shooter game with battle royale.",
-    long_description: "Fly, fight, and collect in the Star Rift – an indie space shooter.",
-    status: "uploaded",
-    created_at: "2025-11-11T18:04:38.000000Z",
-    updated_at: "2025-11-11T18:04:38.000000Z",
-    versions: []
-  },
-  
-   {
-    id: 2,
-    developer_id: 1,
-    title: "PUBG",
-    slug: "pubg",
-    image: "../imges/download.jpg",
-    category: {
-      id: 6,
-      name: "Strategy",
-      slug: "strategy",
-      created_at: "2025-11-11T18:04:38.000000Z"
-    },
-    short_description: "Shooter game with battle royale.",
-    long_description: "Fly, fight, and collect in the Star Rift – an indie space shooter.",
-    status: "testing",
-    created_at: "2025-11-11T18:04:38.000000Z",
-    updated_at: "2025-11-11T18:04:38.000000Z",
-    versions: []
-  },
-];
+  useEffect(() => {
+    fetch(`http://10.31.42.133:8000/api/braintester/games/${id}/uploaded`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.game) {
+          setGames(data.game);
+        } else {
+          setGames(false); 
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        setGames(false); 
+      });
+  }, [id]);
 
-const gameData = game.find(g => g.id === parseInt(id));
+
 
 
   if (game === null) {
@@ -101,7 +58,7 @@ const gameData = game.find(g => g.id === parseInt(id));
       >
         <motion.img
             // Accessing game.image directly is now correct
-            src={game.image}
+          src={`http://10.31.42.133:8000/images/${game.image}`}
             alt={game?.title || "No title"}
             className="w-full h-full object-cover"
             whileHover={{ scale: 1.05 }}
@@ -156,7 +113,7 @@ const gameData = game.find(g => g.id === parseInt(id));
           
             <div>
             
-              <Buttons game={gameData}/>
+              <Buttons game={game}/>
             </div>
 
      

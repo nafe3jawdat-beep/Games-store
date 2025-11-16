@@ -12,7 +12,7 @@ export default function GameCard({ game, onDetails }) {
     >
       <div className="h-[140px] overflow-hidden">
         <img
-            src={`http://10.31.42.133:8000/images/${game.ima}`}
+            src={game.image}
             alt={game.title}
 
 
@@ -38,7 +38,9 @@ export default function GameCard({ game, onDetails }) {
           {/* <p className="text-green-600 font-bold mt-2">{game.price}$</p> */}
         </div>
     
-        
+        <p>
+{game.tester?.name}</p>
+
 
         <button
           onClick={() => onDetails(game)}

@@ -8,7 +8,6 @@ import GameCard from "./Gamecard.jsx";
 const Gamelist = ({ games, onDetails }) => {
   const [titleQuery, setTitleQuery] = useState("");
   const [categoryQuery, setCategoryQuery] = useState("");
-  console.log(games );
   
 const filteredGames = (Array.isArray(games) ? games : []).filter((game) => {
   const title = game.title?.toLowerCase() || "";
@@ -24,7 +23,6 @@ const filteredGames = (Array.isArray(games) ? games : []).filter((game) => {
 
   return (
     <div className="fixed top-0 left-0 w-screen h-screen bg-[#0f172a] text-white flex flex-col md:flex-row overflow-hidden m-0 p-0">
-      {/* Sidebar */}
       <motion.aside
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
@@ -36,7 +34,6 @@ const filteredGames = (Array.isArray(games) ? games : []).filter((game) => {
             CLASSIFICATIONS
           </h2>
 
-          {/* Search */}
           <div className="relative mb-3 w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input
@@ -50,7 +47,6 @@ const filteredGames = (Array.isArray(games) ? games : []).filter((game) => {
             />
           </div>
 
-          {/* Category Filter */}
           <select
             value={categoryQuery}
             onChange={(e) => setCategoryQuery(e.target.value)}
@@ -69,7 +65,6 @@ const filteredGames = (Array.isArray(games) ? games : []).filter((game) => {
         <p className="text-xs text-gray-400 mt-auto hidden md:block">© 2025 GameStore</p>
       </motion.aside>
 
-      {/* Main Content */}
       <main className="flex-1 h-full overflow-y-auto px-4 md:px-8 py-6 md:py-8 m-0">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
@@ -82,10 +77,9 @@ const filteredGames = (Array.isArray(games) ? games : []).filter((game) => {
         {/* Games Grid */}
         <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-20">
           <AnimatePresence>
-            {filteredGames.length > 0 ? (
-              filteredGames.map((game) => (
+            { filteredGames.map((game) => (
                 <motion.div
-                  key={game.id}       // مهم جداً لكل كرت
+                  key={game.id}       
                   variants={cardVariants}
                   initial="hidden"
                   animate="show"
@@ -98,17 +92,8 @@ const filteredGames = (Array.isArray(games) ? games : []).filter((game) => {
                   <GameCard game={game} onDetails={onDetails} />
                 </motion.div>
               ))
-            ) : (
-              <motion.p
-                key="no-games"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="text-gray-400 mt-8 text-center col-span-full"
-              >
-                No games match your search.
-              </motion.p>
-            )}
+      
+}
           </AnimatePresence>
         </motion.div>
       </main>

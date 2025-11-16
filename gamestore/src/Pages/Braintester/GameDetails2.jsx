@@ -1,30 +1,75 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect,useState } from "react";
+// import { useEffect,useState } from "react";
 /* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
+import Buttons from "../../components/Buttons";
 
 export default function GamesDetails2() {
   const { id } = useParams();
-  const [game, setGames] = useState(null); 
+
+  // const [game, setGames] = useState(null); 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch(`http://10.31.42.133:8000/api/braintester/games/${id}/uploaded`)
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.game) {
-          setGames(data.game);
-        } else {
-          setGames(false); 
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        setGames(false); 
-      });
-  }, [id]);
+  // useEffect(() => {
+  //   fetch(`http://10.31.42.133:8000/api/braintester/games/${id}/uploaded`)
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       if (data && data.game) {
+  //         setGames(data.game);
+  //       } else {
+  //         setGames(false); 
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.error(err);
+  //       setGames(false); 
+  //     });
+  // }, [id]);
+const game = [
+  {
+    id: 1,
+    developer_id: 1,
+    title: "PUBG",
+    slug: "pubg",
+    image: "../imges/download.jpg",
+    category: {
+      id: 6,
+      name: "Strategy",
+      slug: "strategy",
+      created_at: "2025-11-11T18:04:38.000000Z"
+    },
+    short_description: "Shooter game with battle royale.",
+    long_description: "Fly, fight, and collect in the Star Rift – an indie space shooter.",
+    status: "uploaded",
+    created_at: "2025-11-11T18:04:38.000000Z",
+    updated_at: "2025-11-11T18:04:38.000000Z",
+    versions: []
+  },
+  
+   {
+    id: 2,
+    developer_id: 1,
+    title: "PUBG",
+    slug: "pubg",
+    image: "../imges/download.jpg",
+    category: {
+      id: 6,
+      name: "Strategy",
+      slug: "strategy",
+      created_at: "2025-11-11T18:04:38.000000Z"
+    },
+    short_description: "Shooter game with battle royale.",
+    long_description: "Fly, fight, and collect in the Star Rift – an indie space shooter.",
+    status: "testing",
+    created_at: "2025-11-11T18:04:38.000000Z",
+    updated_at: "2025-11-11T18:04:38.000000Z",
+    versions: []
+  },
+];
+
+const gameData = game.find(g => g.id === parseInt(id));
 
 
   if (game === null) {
@@ -35,56 +80,6 @@ export default function GamesDetails2() {
     );
   }
   
-  if (game === false) {
-    return (
-      <div className="flex justify-center items-center h-screen bg-[#0f172a] text-white">
-        <p>❌ Game not found or an error occurred</p>
-      </div>
-    );
-  }
-
-const handlesendtostore = async (gameId) => {
-  try {
-    const res = await fetch(
-      `http://10.31.42.133:8000/api/braintester/games/${gameId}/chnagestatus`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-
-    if (!res.ok) throw new Error("Network response was not ok");
-
-    await res.json();
-
-    navigate("/Gamestotest");
-
-  } catch (err) {
-    console.error(err);
-  }
-};
-const handleReject = async(gameId)=>{
-  try {
-      const res = await fetch(
-      `http://10.31.42.133:8000/api/braintester/games/${gameId}/chnagestatus`,
-      {
-         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-  }
-  );
-    if (!res.ok) throw new Error("Network response was not ok");
-
-    await res.json();
-
-    navigate(`//${gameId}`);
-
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-
-
 
   return (
     <div className="fixed top-0 left-0 w-screen h-screen bg-[#0f172a] flex flex-col md:flex-row overflow-hidden m-0 p-0">
@@ -106,7 +101,7 @@ const handleReject = async(gameId)=>{
       >
         <motion.img
             // Accessing game.image directly is now correct
-            src={`http://10.31.42.133:8000/images/${game.image}`}
+            src={game.image}
             alt={game?.title || "No title"}
             className="w-full h-full object-cover"
             whileHover={{ scale: 1.05 }}
@@ -131,14 +126,12 @@ const handleReject = async(gameId)=>{
           </div>
 
 
-          {/* Description */}
           <p className="text-gray-300 leading-relaxed text-lg">
             {game.long_description}
           </p>
           
-          {/* Info Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-gray-300 pt-2">
-            {/* Category */}
+
             <div>
               <p className="text-cyan-400 font-semibold text-sm uppercase tracking-wide">
                 Category
@@ -153,7 +146,6 @@ const handleReject = async(gameId)=>{
               {/* <p className="text-lg">${game.price}</p> */} 
             </div>
             
-            {/* Platform (Using the first version's platform as 'Main Store') */}
             <div>
               <p className="text-cyan-400 font-semibold text-sm uppercase tracking-wide">
                 Platform
@@ -162,32 +154,13 @@ const handleReject = async(gameId)=>{
             </div>
           </div>
           
-          <div className="pt-6">
-            {/* <motion.a
-              href={`http://10.31.42.133:8000/files/${game.versions?.[0]?.file_path}`} 
-              download
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-block px-10 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-xl shadow-md transition-all"
-            >
-              ⬇️ Download Game
-            </motion.a> */}
+            <div>
             
-            <button
-              onClick={() => handleReject(game.id)}
-                className="w-full py-3 mt-4 bg-green-500 text-white font-semibold rounded-xl shadow-md hover:bg-green-600 transition-colors"
-            >
-              Reject
-            </button>
+              <Buttons game={gameData}/>
+            </div>
 
-            <button
-              onClick={() => handlesendtostore(game.id)}
-              className="w-full py-3 mt-4 bg-green-500 text-white font-semibold rounded-xl shadow-md hover:bg-green-600 transition-colors"
-            >
-               Send to Store
-            </button>
+     
           </div>
-        </div>
       </motion.div>
     </div>
   );

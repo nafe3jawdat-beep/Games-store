@@ -30,6 +30,7 @@ function Buttons({ game }) {
     }
   };
 
+
   if (game.status === "uploaded") {
     return (
       <div className="space-y-3 mt-6">
@@ -57,6 +58,15 @@ function Buttons({ game }) {
         >
           Testing Action
         </button>
+      <div className="space-y-3 mt-6">
+        <button
+          onClick={() => navigate("/NotesPage")}
+          className="w-full py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl"
+        >
+         ADD NOTES
+        </button>
+        </div>
+
       </div>
     );
   } else {

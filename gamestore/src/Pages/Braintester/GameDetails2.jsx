@@ -1,5 +1,6 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect,useState } from "react";
+import {  useParams,useNavigate } from "react-router-dom";
+import { useState ,useEffect} from "react";
+import React from "react";
 /* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
@@ -25,7 +26,6 @@ export default function GamesDetails2() {
         setGames(false); 
       });
   }, [id]);
-
 
 
 

@@ -13,7 +13,7 @@ const Brainlist = () => {
       .then(data => {
         setGames(data.games); 
       })
-      .catch(err => console.error("Error fetching games:", err));
+      .catch(err => console.error("Error fetching the games:", err));
   }, []);
 
   const handleDetails = (game) => {

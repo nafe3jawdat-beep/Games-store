@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Gamelist from "../../components/Gameslist";
-const TesterStore = () => {
+
+const TesterList = () => {
   const [games, setGames] = useState([]);
   const navigate = useNavigate();
 
@@ -16,8 +17,9 @@ const TesterStore = () => {
 
   const handleDetails = (game) => {
     console.log(game);
-    navigate(`/details${game.id}`);
+    navigate(`/details/${game.id}`);
   };
+
   return (
     <div className="p-5">
       {<Gamelist games={games} onDetails={handleDetails} />}
@@ -25,4 +27,4 @@ const TesterStore = () => {
   );
 };
 
-export default TesterStore;
+export default TesterList;

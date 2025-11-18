@@ -8,17 +8,24 @@ import GameCard from "./Gamecard.jsx";
 const Gamelist = ({ games, onDetails }) => {
   const [titleQuery, setTitleQuery] = useState("");
   const [categoryQuery, setCategoryQuery] = useState("");
-  
-const filteredGames = (Array.isArray(games) ? games : []).filter((game) => {
-  const title = game.title?.toLowerCase() || "";
-  const category = game.category?.name || "";
-  return title.includes(titleQuery.toLowerCase()) &&
-         (categoryQuery === "" || category === categoryQuery);
-});
+
+  const filteredGames = (Array.isArray(games) ? games : []).filter((game) => {
+    const title = game.title?.toLowerCase() || "";
+    const category = game.category?.name || "";
+    return (
+      title.includes(titleQuery.toLowerCase()) &&
+      (categoryQuery === "" || category === categoryQuery)
+    );
+  });
 
   const cardVariants = {
     hidden: { opacity: 0, y: 30, scale: 0.95 },
-    show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: "easeOut" } },
+    show: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.4, ease: "easeOut" },
+    },
   };
 
   return (
@@ -35,7 +42,10 @@ const filteredGames = (Array.isArray(games) ? games : []).filter((game) => {
           </h2>
 
           <div className="relative mb-3 w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              size={18}
+            />
             <input
               type="text"
               placeholder="Search"
@@ -62,7 +72,9 @@ const filteredGames = (Array.isArray(games) ? games : []).filter((game) => {
           </select>
         </div>
 
-        <p className="text-xs text-gray-400 mt-auto hidden md:block">© 2025 GameStore</p>
+        <p className="text-xs text-gray-400 mt-auto hidden md:block">
+          © 2025 GameStore
+        </p>
       </motion.aside>
 
       <main className="flex-1 h-full overflow-y-auto px-4 md:px-8 py-6 md:py-8 m-0">
@@ -77,23 +89,21 @@ const filteredGames = (Array.isArray(games) ? games : []).filter((game) => {
         {/* Games Grid */}
         <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-20">
           <AnimatePresence>
-            { filteredGames.map((game) => (
-                <motion.div
-                  key={game.id}       
-                  variants={cardVariants}
-                  initial="hidden"
-                  animate="show"
-                  exit={{ opacity: 0, y: 20 }}
-                  layout
-                  className="bg-[#1e293b] p-4 rounded-xl shadow-md border border-transparent
+            {filteredGames.map((game) => (
+              <motion.div
+                key={game.id}
+                variants={cardVariants}
+                initial="hidden"
+                animate="show"
+                exit={{ opacity: 0, y: 20 }}
+                layout
+                className="bg-[#1e293b] p-4 rounded-xl shadow-md border border-transparent
                     hover:border-blue-400/60 hover:shadow-blue-900/40
                     hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-                >
-                  <GameCard game={game} onDetails={onDetails} />
-                </motion.div>
-              ))
-      
-}
+              >
+                <GameCard game={game} onDetails={onDetails} />
+              </motion.div>
+            ))}
           </AnimatePresence>
         </motion.div>
       </main>

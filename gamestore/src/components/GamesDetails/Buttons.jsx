@@ -1,35 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { SendToStore, Reject } from "./ActionButtons";
 
 function Buttons({ game }) {
   const navigate = useNavigate();
 
   const handleSendToStore = async () => {
-    try {
-      await fetch(`http://10.31.42.133:8000/api/braintester/games/${game.id}/chnagestatus`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      navigate("/Gamestotest");
-    } catch (err) {
-      console.error(err);
-    }
+    await SendToStore(game.id);
+    navigate("/Gamestotest");
   };
 
   const handleReject = async () => {
-    try {
-      await fetch(`http://10.31.42.133:8000/api/braintester/games/${game.id}/chnagestatus`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-    }
+    await Reject(game.id);
+    navigate(-1);
   };
-
 
   if (game.status === "uploaded") {
     return (
@@ -58,19 +42,18 @@ function Buttons({ game }) {
         >
           Testing Action
         </button>
-      <div className="space-y-3 mt-6">
-        <button
-          onClick={() => navigate("/NotesPage")}
-          className="w-full py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl"
-        >
-         ADD NOTES
-        </button>
+        <div className="space-y-3 mt-6">
+          <button
+            onClick={() => navigate("/NotesPage")}
+            className="w-full py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl"
+          >
+            ADD NOTES
+          </button>
         </div>
-
       </div>
     );
   } else {
-    return null; // لأي حالة أخرى
+    return null;
   }
 }
 

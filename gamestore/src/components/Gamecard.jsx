@@ -3,44 +3,35 @@ import React from "react";
 export default function GameCard({ game, onDetails }) {
   return (
     <div
-    className="
+      className="
   bg-gray-400 border border-gray-300 rounded-xl overflow-hidden shadow-md
   w-56 h-[340px] flex flex-col justify-between
   transition-transform duration-300 hover:scale-105 hover:shadow-2xl  mt-[30px]
 "
-
     >
       <div className="h-[140px] overflow-hidden">
         <img
-             src={`http://10.31.42.133:8000/images/${game.image}`}
-            alt={game.title}
-
-
+          src={`http://10.31.42.133:8000/images/${game.image}`}
+          alt={game.title}
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
         />
       </div>
 
       <div className="p-3 text-center flex flex-col justify-between flex-1">
-
-
         <div className="flex-1">
           <h3
             className="
               text-base font-semibold text-gray-800 truncate block
               max-w-[200px] mx-auto"
           >
-          {game.title}
+            {game.title}
           </h3>
-          <p>
-          {game.short_description}
-          </p>
-<p className="text-gray-500 text-sm mt-1">{game.category?.name}</p>
+          <p>{game.short_description}</p>
+          <p className="text-gray-500 text-sm mt-1">{game.category?.name}</p>
           {/* <p className="text-green-600 font-bold mt-2">{game.price}$</p> */}
         </div>
-    
-        <p>
-{game.tester?.name}</p>
 
+        <p>{game.tester?.name}</p>
 
         <button
           onClick={() => onDetails(game)}

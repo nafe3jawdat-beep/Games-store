@@ -8,7 +8,7 @@ const Brainlist = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://10.31.42.133:8000/api/braintester/games/triage_pending")
+    fetch("http://10.52.19.133:8000/api/braintester/games/triage_pending")
       .then(res => res.json())
       .then(data => {
         setGames(data.games); 

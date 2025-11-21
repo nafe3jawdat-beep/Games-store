@@ -4,44 +4,29 @@ export default function GameInfo({ game }) {
   if (!game) return null;
 
   return (
-    <div className="max-w-xl space-y-8">
-      ={" "}
-      <div className="relative inline-block">
-        <h1 className="text-5xl md:text-6xl font-extrabold text-cyan-400 leading-tight inline-block">
-          {game.title}
-        </h1>
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-3 w-[80%] h-[3px] bg-cyan-500/80 rounded-full"></div>
-      </div>
-      <p className="text-gray-300 leading-relaxed text-lg">
-        {game.long_description}
-      </p>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-gray-300 pt-2">
-        <div>
-          <p className="text-cyan-400 font-semibold text-sm uppercase tracking-wide">
-            Category
-          </p>
-          {game.category ? (
-            <p className="text-lg">{game.category.name}</p>
-          ) : (
-            <p className="text-lg">N/A</p>
-          )}
-        </div>
+    <div>
+      <h2 className="text-2xl font-semibold mb-3 border-b border-gray-700 pb-2">
+        🕹️ About the Game
+      </h2>
+      <p className="text-gray-300 leading-relaxed mb-6">{game.description}</p>
 
-        {/* Price */}
-        <div>
-          <p className="text-cyan-400 font-semibold text-sm uppercase tracking-wide">
-            Price
-          </p>
-          {/* <p className="text-lg">${game.price}</p>         */}
-        </div>
-
-        <div>
-          <p className="text-cyan-400 font-semibold text-sm uppercase tracking-wide">
-            Platform
-          </p>
-          {/* <p className="text-lg">{game.versions[0].platform.name}</p> */}
-        </div>
-      </div>
+      {game.tasks && game.tasks.length > 0 && (
+        <>
+          <h3 className="text-xl font-semibold mb-3">🎯 Game Missions</h3>
+          <ul className="space-y-3">
+            {game.tasks.map((task) => (
+              <li
+                key={task.id}
+                className="bg-[#1e293b] hover:bg-[#334155] transition rounded-lg p-4 shadow-lg"
+              >
+                <h4 className="font-bold text-indigo-300 mb-1">{task.title}</h4>
+                <p className="text-gray-400 text-sm">{task.description}</p>
+              </li>
+            ))}
+          </ul>
+          
+        </>
+      )}
     </div>
   );
 }

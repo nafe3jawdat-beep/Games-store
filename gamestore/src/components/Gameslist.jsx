@@ -110,5 +110,4 @@ const Gamelist = ({ games, onDetails }) => {
     </div>
   );
 };
-
 export default Gamelist;

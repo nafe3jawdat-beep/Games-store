@@ -11,7 +11,7 @@ export default function GameCard({ game, onDetails }) {
     >
       <div className="h-[140px] overflow-hidden">
         <img
-          src={`http://10.31.42.133:8000/images/${game.image}`}
+          src={game.image}
           alt={game.title}
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
         />

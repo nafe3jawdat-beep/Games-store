@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import SelectTester from "./SelectTester";
 
 export default function NotesPage() {
   const { id } = useParams();
@@ -100,6 +101,7 @@ export default function NotesPage() {
         >
           Save Notes
         </button>
+        <SelectTester />
       </div>
     </div>
   );

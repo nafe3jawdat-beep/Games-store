@@ -1,4 +1,5 @@
 import React from "react";
+import {BaseUrl} from "..//Pages/BaseUrl";
 
 export default function GameCard({ game, onDetails }) {
   return (
@@ -11,7 +12,7 @@ export default function GameCard({ game, onDetails }) {
     >
       <div className="h-[140px] overflow-hidden">
         <img
-          src={game.image}
+          src={`${BaseUrl}/${game.image}`}
           alt={game.title}
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
         />

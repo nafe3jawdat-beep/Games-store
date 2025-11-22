@@ -1,9 +1,10 @@
 import React from "react";
 
-export default function BrainNotes({ game }) {
-  if (!game) return null;
+export default function BrainNotes({ version }) {
+  if (!version || !version.triage_record) return null;
+  if (version.status !== "testing") return null;
 
-  const triage = game.triage_record;
+  const triage = version.triage_record;
 
   return (
     <div className="max-w-xl mx-auto mt-6 px-2">
@@ -11,41 +12,32 @@ export default function BrainNotes({ game }) {
         <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
           Brain Tester
         </h3>
-
-        {game.status === "triage" ? (
-          <p className="text-gray-600 dark:text-gray-300 break-words">
-            لا توجد ملاحظات متوفرة.
+        <div className="space-y-3 text-gray-700 dark:text-gray-300 break-words">
+          <p>
+            <span className="font-semibold">Is Game:</span>{" "}
+            {triage.is_game ? "نعم" : "لا"}
           </p>
-        ) : (
-          <div className="space-y-3 text-gray-700 dark:text-gray-300 break-words">
-            <p>
-              <span className="font-semibold">Is Game:</span>
-              {triage.is_game ? "نعم" : "لا"}
-            </p>
 
-            <p>
-              <span className="font-semibold">Category Valid:</span>
-              {triage.category_valid ? "نعم" : "لا"}
-            </p>
+          <p>
+            <span className="font-semibold">Category Valid:</span>{" "}
+            {triage.category_valid ? "نعم" : "لا"}
+          </p>
 
-            <p>
-              <span className="font-semibold">Main Story Approx Hours:</span>
-              {triage.main_story_approximate_hours ?? "غير محدد"}
-            </p>
+          <p>
+            <span className="font-semibold">Main Story Approx Hours:</span>{" "}
+            {triage.main_story_estimate_hours ?? "غير محدد"}
+          </p>
 
-            <p>
-              <span className="font-semibold">Main Story Confidence:</span>
-              {triage.main_story_confidence ?? "غير محدد"}
-            </p>
+          <p>
+            <span className="font-semibold">Main Story Confidence:</span>{" "}
+            {triage.main_story_confidence ?? "غير محدد"}
+          </p>
 
-            <p>
-              <span className="font-semibold">Notes:</span>
-              <span className="break-words">
-                {triage.notes || "لا توجد ملاحظات إضافية"}
-              </span>
-            </p>
-          </div>
-        )}
+          <p>
+            <span className="font-semibold">Notes:</span>{" "}
+            {triage.notes || "لا توجد ملاحظات إضافية"}
+          </p>
+        </div>
       </div>
     </div>
   );

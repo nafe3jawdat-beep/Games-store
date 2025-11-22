@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Gamelist from "../../components/Gameslist";
+import {BaseUrl} from "../BaseUrl";
 
 const Brainlist = () => {
   const [games, setGames] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://10.52.19.133:8000/api/braintester/games/uploaded")
+    fetch(`${BaseUrl}/api/braintester/games/uploaded`)
       .then((res) => res.json())
       .then((data) => {
         setGames(data.games);
@@ -16,10 +17,14 @@ const Brainlist = () => {
       
   }, []);
 
-  const handleDetails = (game) => {
-    console.log(game);
-    navigate(`/details/${game.id}`);
-  };
+const handleDetails = (game) => {
+  navigate(`/details/${game.id}`, {
+    state: {
+      status: game.status, 
+    }
+  });
+};
+
 
   return (
     <div className="p-5">

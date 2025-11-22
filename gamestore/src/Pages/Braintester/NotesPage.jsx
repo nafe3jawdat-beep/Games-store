@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import {BaseUrl} from "../BaseUrl";
 
 export default function NotesPage() {
   const { id } = useParams();
@@ -15,8 +16,7 @@ export default function NotesPage() {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch(
-        `http://10.31.42.133:8000/api/braintester/games/${id}/triage-record`,
+      const res = await fetch(`${BaseUrl}/api/braintester/games/${id}/triage-record`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

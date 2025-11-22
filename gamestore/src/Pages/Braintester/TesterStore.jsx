@@ -1,37 +1,20 @@
-// import React, { u useState } from "react";
-import React from "react";
+import React, {useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const TesterStore = () => {
-  // const [testers, setTesters] = useState([]);
+  const [testers, setTesters] = useState([]);
   const navigate = useNavigate();
 
-  // 🔹 مصفوفة التجربة
-  const testers = [
-    {
-      id: 1,
-      name: "Tester One",
-      email: "tester1@example.com",
-      phone: "0999888777",
-      image: "tester1.jpg",
-    },
-    {
-      id: 2,
-      name: "Tester Two",
-      email: "tester2@example.com",
-      phone: "0999333222",
-      image: "../../imges/download.jpg",
-    },
-    {
-      id: 3,
-      name: "Tester Three",
-      email: "tester3@example.com",
-      phone: "0999000111",
-      image: "tester3.jpg",
-    },
-  ];
 
-
+  useEffect(() => {
+    fetch("http://10.52.19.133:8000/api/braintester/testers")
+      .then((res) => res.json())
+      .then((data) => {
+        setTesters(data.games);
+      })
+      .catch((err) => console.error("Error fetching games:", err));
+      
+  }, []);
 
   const handleDetails = (tester) => {
     navigate(`/TesterList/${tester.id}`);

@@ -15,45 +15,88 @@ function Buttons({ game }) {
     navigate(-1);
   };
 
+  // Container مشترك لكل الأزرار
+  const buttonClass =
+    "w-full md:w-auto py-3 px-6 rounded-xl text-white font-semibold transition-colors duration-300";
+
   if (game.status === "uploaded") {
     return (
-      <div className="space-y-3 mt-6">
+      <div className="flex flex-col md:flex-row gap-4 mt-6 max-w-md mx-auto">
         <button
           onClick={handleReject}
-          className="w-full py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl"
+          className={`${buttonClass} bg-red-500 hover:bg-red-600`}
         >
           Reject
         </button>
 
         <button
           onClick={handleSendToStore}
-          className="w-full py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl"
+          className={`${buttonClass} bg-green-500 hover:bg-green-600`}
         >
           Send to Store
         </button>
       </div>
     );
-  } else if (game.status === "testing") {
+  } else if (game.game.status === "triage") {
+    const buttonClass =
+      "w-full md:w-40 py-3 rounded-xl text-white font-semibold transition-all duration-300";
+
+    // JSX
     return (
-      <div className="space-y-3 mt-6">
+      <div className="flex flex-col md:flex-row flex-wrap gap-4 mt-6 max-w-xl mx-auto justify-center">
         <button
           onClick={() => console.log("Game is in testing")}
-          className="w-full py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl"
+          className={`${buttonClass} bg-blue-900 hover:bg-green-400`}
         >
-          Testing Action
+          Download
         </button>
-        <div className="space-y-3 mt-6">
-          <button
-            onClick={() => navigate("/NotesPage")}
-            className="w-full py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl"
-          >
-            ADD NOTES
-          </button>
-        </div>
+
+        <button
+          onClick={() => navigate("/NotesPage")}
+          className={`${buttonClass} bg-cyan-500 hover:bg-cyan-600`}
+        >
+          Add Notes
+        </button>
+
+        <button
+          onClick={handleReject}
+          className={`${buttonClass} bg-red-500 hover:bg-red-600`}
+        >
+          Reject
+        </button>
+
+        <button
+          onClick={handleSendToStore}
+          className={`${buttonClass} bg-emerald-400 hover:bg-emerald-600`}
+        >
+          Accept
+        </button>
       </div>
     );
-  } else {
-    return null;
+  } else if (game.status === "testing") {
+    return (
+      <div className="flex flex-col md:flex-row gap-4 mt-6 max-w-md mx-auto">
+        <button
+          onClick={handleReject}
+          className={`${buttonClass} bg-red-500 hover:bg-red-600`}
+        >
+          Reject
+        </button>
+
+        <button
+          onClick={handleSendToStore}
+          className={`${buttonClass} bg-green-500 hover:bg-green-600`}
+        >
+          Download
+        </button>
+        <button
+          onClick={() => navigate("/NotesPage")}
+          className={`${buttonClass} bg-cyan-500 hover:bg-cyan-600`}
+        >
+          Add Notes
+        </button>
+      </div>
+    );
   }
 }
 

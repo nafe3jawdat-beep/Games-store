@@ -15,12 +15,13 @@ function App() {
     
     <Router>
       <Routes>
-        <Route path="/" element={<Brainlist />} />
+        <Route path="/Brainlist" element={<Brainlist />} />
+        <Route path="/NotesPage" element={<NotesPage />} />
         <Route path="/SelectTester" element={<SelectTester />} />
         <Route path="/NotesPage" element={<NotesPage />} />
         <Route path="/details/:id" element={<GameDetails2 />} />
         <Route path="/Gamestotest" element={<Gamestotest />} />
-        <Route path="/TesterStore" element={<TesterStore />} />
+        <Route path="/" element={<TesterStore />} />
         <Route path="/TesterList/:id" element={<TesterList />} />
 
       

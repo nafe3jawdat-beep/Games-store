@@ -4,6 +4,7 @@ import {BaseUrl} from "../BaseUrl";
 
 export default function NotesPage() {
   const { id } = useParams();
+  console.log(id);
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -16,9 +17,9 @@ export default function NotesPage() {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch(`${BaseUrl}/api/braintester/games/${id}/triage-record`,
+      const res = await fetch(`${BaseUrl}/api/braintester/triage/${id}/triage-record`,
         {
-          method: "POST",
+          method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(form),
         }

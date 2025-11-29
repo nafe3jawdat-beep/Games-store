@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Card from "../../components/Card";
+import Card from "../../components/CARDS/Card";
 import { BaseUrl } from "../BaseUrl";
 
 export default function TesterStore() {

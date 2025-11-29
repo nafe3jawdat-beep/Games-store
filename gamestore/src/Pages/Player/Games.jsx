@@ -9,7 +9,7 @@ const Brainlist = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${BaseUrl}/api/braintester/games/uploaded`)
+    fetch(`${BaseUrl}/api/player/games/published`)
       .then((res) => res.json())
       .then((data) => {
         setGames(data.games);
@@ -17,6 +17,7 @@ const Brainlist = () => {
       .catch((err) => console.error("Error fetching games:", err));
       
   }, []);
+
 
 const handleDetails = (game) => {
   navigate(`/details/${game.id}`, {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Gamelist from "../../components/Gameslist";
+import Gamelist from "../../components/CARDS/Gameslist";
 import {BaseUrl} from "../BaseUrl";
 const Brainlist = () => {
   const [games, setGames] = useState([]); 

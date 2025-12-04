@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+// import React from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "../../components/CARDS/Card";
 import { BaseUrl } from "../BaseUrl";
@@ -17,11 +18,13 @@ export default function TesterStore() {
   }, []);
 
 
+
   return (
-    <div className="min-h-screen w-full bg-[#0f172a] p-6">
-      <h1 className="text-3xl font-bold text-cyan-400 mb-6 border-b border-cyan-700 pb-3">
-        Testers List
-      </h1>
+    <div className="min-h-screen w-full  bg-[#0f172a] lg:pl-[260px]">
+<h1 className="text-3xl font-bold text-center text-cyan-400  border-b border-cyan-700 pb-3">
+  Testers List
+</h1>
+
 
       <div className="flex flex-col gap-5">
         {testers.map((tester) => (

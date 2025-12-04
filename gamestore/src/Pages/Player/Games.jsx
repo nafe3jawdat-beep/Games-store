@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Gamelist from "../../components/CARDS/Gameslist";
 import {BaseUrl} from "../BaseUrl";
 
-const Brainlist = () => {
+const Games = () => {
   const [games, setGames] = useState([]);
   const navigate = useNavigate();
 
@@ -17,6 +17,7 @@ const Brainlist = () => {
       .catch((err) => console.error("Error fetching games:", err));
       
   }, []);
+
 
 
 const handleDetails = (game) => {
@@ -35,4 +36,4 @@ const handleDetails = (game) => {
   );
 };
 
-export default Brainlist;
+export default Games;

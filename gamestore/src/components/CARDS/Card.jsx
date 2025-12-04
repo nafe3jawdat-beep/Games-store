@@ -6,7 +6,7 @@ export default function Card({ image, title, fields = [], onClick }) {
       onClick={onClick}
       className="bg-[#1e293b] text-white rounded-xl shadow-md p-4 cursor-pointer
                  border border-cyan-500/30 hover:shadow-cyan-400/20 transition-all
-                 flex flex-row items-center gap-4"
+                 flex flex-row items-center gap-4 "
     >
       <img
         src={image}

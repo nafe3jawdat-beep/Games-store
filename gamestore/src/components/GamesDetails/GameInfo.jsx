@@ -1,13 +1,13 @@
 import React from "react";
 import Buttons from "./Buttons";
+import{BaseUrl} from "../../Pages/BaseUrl";
 
 export default function GameInfo({ game }) {
   if (!game) return null;
-
+  
   return (
     <div className="max-w-6xl mx-auto w-full px-6 py-10">
       <div className="grid grid-cols-1 md:grid-cols-3  gap-10">
-        {/* القسم الأيسر */}
         <div className="md:col-span-2">
           <h2 className="text-2xl font-semibold mb-3 border-b border-gray-700 pb-2">
             🕹️ About the Game
@@ -16,8 +16,7 @@ export default function GameInfo({ game }) {
             {game.description}
           </p>
 
-          {/* إذا كان لديك مهام إضافية */}
-          {/* 
+          
           {game.tasks && game.tasks.length > 0 && (
             <>
               <h3 className="text-xl font-semibold mb-3">🎯 Game Missions</h3>
@@ -28,18 +27,20 @@ export default function GameInfo({ game }) {
                     className="bg-[#1e293b] hover:bg-[#334155] transition rounded-lg p-4 shadow-lg"
                   >
                     <h4 className="font-bold text-indigo-300 mb-1">
-                      {task.title}
+                      {task.name}
                     </h4>
                     <p className="text-gray-400 text-sm">{task.description}</p>
+                    <p> reward: {task.reward}</p>
+
+
                   </li>
                 ))}
               </ul>
             </>
           )}
-          */}
+          
         </div>
 
-        {/* القسم الأيمن (بطاقة الشراء) */}
         <div
           className="md:col-span-1 w-full max-w-[350px] bg-gradient-to-b from-[#60718a] to-[#475569]
             rounded-xl p-4 md:p-5 flex flex-col justify-between 
@@ -63,7 +64,7 @@ export default function GameInfo({ game }) {
             <p className="text-indigo-300 font-semibold">{game.category?.name}</p>
           </div>
 
-       <div className="w-full flex flex-row gap-4">
+       <div className="">
   <Buttons game={game} />
 </div>
 

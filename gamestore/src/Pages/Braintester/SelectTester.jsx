@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {  useEffect,useState } from "react";
 import { BaseUrl } from "../BaseUrl";
 
 function SelectTester({ gameId }) {
@@ -9,27 +9,39 @@ function SelectTester({ gameId }) {
     fetch(`${BaseUrl}/api/braintester/testers`)
       .then((res) => res.json())
       .then((data) => {
-        setTester(data.tester);
+        setTester(data.testers);
       })
       .catch(() => setTester([]));
   }, []);
+console.log(gameId)
+const assignToTester = async () => {
+  if (!selectTester) return alert("Please select a tester");
 
-  const assignToTester = async () => {
-    if (!selectTester) return alert("Please select a tester");
-    await fetch(
-      `${BaseUrl}/api/braintester/games/${gameId}/assign`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tester_id: selectTester }),
-      }
-    );
+  try {
+    const res = await fetch(`${BaseUrl}/api/braintester/triage/${gameId}/accepted?tester_id=${selectTester}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      // body: JSON.stringify({ testerId: selectTester }),
+    });
+
+    console.log("Status:", res.status);
+
+    const data = await res.json().catch(() => null);
+    console.log("Response data:", data);
+
+    if (!res.ok) throw new Error("Failed to assign tester");
+
     alert("Game assigned to tester successfully!");
-  };
+  } catch (err) {
+    console.error("Error:", err);
+    alert("Failed to assign tester");
+  }
+};
+
 
   const sendToQeue = async () => {
     await fetch(
-      `http://10.31.42.133:8000/api/braintester/games/${gameId}/send-to-storage`,
+      `http://10.31.42.133:8000/api/braintester/games/${gameId}/send-to-Qeue`,
       {
         method: "PUT",
       }
@@ -40,7 +52,6 @@ function SelectTester({ gameId }) {
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-slate-800 rounded-2xl shadow-lg text-white">
       <h3 className="text-2xl font-bold mb-4 text-center">Assign Tester</h3>
-
       {testers.length === 0 ? (
         <div className="space-y-4 text-center">
           <p className="text-gray-300">No Testers Available</p>
@@ -53,9 +64,12 @@ function SelectTester({ gameId }) {
         </div>
       ) : (
         <div className="space-y-4">
-          <select
-            value={selectTester}
-            onChange={(e) => setSelectTester(e.target.value)}
+       <select
+  value={selectTester}
+  onChange={(e) => {
+    setSelectTester(e.target.value);
+  }}
+            
             className="w-full p-3 rounded-xl bg-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
           >
             <option value="">Select Tester</option>

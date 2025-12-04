@@ -4,38 +4,44 @@ import {BaseUrl} from "../BaseUrl";
 
 export default function NotesPage() {
   const { id } = useParams();
-  console.log(id);
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    is_game: false,
-    category_valid: false,
-    main_story_approximate_hours: "",
-    main_story_confidence: "",
-    notes: "",
-  });
+  is_game: false,
+  category_valid: false,
+  main_story_estimate_hours: "",
+  main_story_confidence: "",
+  notes: "",
+});
+
 
   const handleSubmit = async () => {
-    try {
-      const res = await fetch(`${BaseUrl}/api/braintester/triage/${id}/triage-record`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        }
-        
-      );
-            navigate(-1);
-
-      if (!res.ok) throw new Error("Failed to save notes");
-      
-    } catch (err) {
-            navigate(-1);
-
-      console.error(err);
-      alert("Error saving notes");
-    }
+  const updatedForm = {
+    ...form,
+    main_story_estimate_hours: parseInt(form.main_story_estimate_hours) || 0,
+    main_story_confidence: parseInt(form.main_story_confidence) || 0,
   };
+
+  try {
+    const res = await fetch(`${BaseUrl}/api/braintester/triage/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedForm),
+    });
+
+    // console.log("Status:", res.status);
+    // const data = await res.json().catch(() => null);
+    // console.log("Response data:", data);
+
+    if (!res.ok) throw new Error("Failed to save notes");
+
+    navigate(-1);
+  } catch (err) {
+    console.error("Error:", err);
+    alert("Error saving notes");
+    navigate(-1);
+  }
+};
 
   return (
     <div
@@ -89,11 +95,11 @@ export default function NotesPage() {
               type="number"
               className="w-full p-3 bg-white/20 backdrop-blur-xl border border-white/20 rounded-xl
                          focus:border-cyan-400 outline-none text-white transition-all duration-300"
-              value={form.main_story_approximate_hours}
+              value={form.main_story_estimate_hours}
               onChange={(e) =>
                 setForm({
                   ...form,
-                  main_story_approximate_hours: e.target.value,
+                  main_story_estimate_hours: e.target.value,
                 })
               }
             />

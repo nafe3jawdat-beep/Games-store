@@ -13,7 +13,8 @@ import FinishedGames from "./Pages/Tester/FinishedGames";
 import AddGame from "./Pages/Developer/AddGame";
 import TesterNotesPage from "./Pages/Tester/TesterNotesPage";
 import SideBar from "./components/SideBar";
-
+import Games from "./Pages/Player/Games";
+import MyLibrary from "./Pages/Player/MyLibrary";
 function AppWrapper() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
@@ -30,10 +31,13 @@ function AppWrapper() {
         }`}
       >
         <Routes>
-          <Route path="/" element={<AddGame />} />
+          <Route path="/AddGame" element={<AddGame />} />
+          <Route path="/MyLibrary" element={<MyLibrary />} />
+          <Route path="/" element={<Games />} />
           <Route path="/TesterNotesPage" element={<TesterNotesPage />} />
           <Route path="/Brainlist" element={<Brainlist />} />
           <Route path="/NotesPage/:id" element={<NotesPage />} />
+          <Route path="/TesterNotesPage/:id" element={<TesterNotesPage />} />
           <Route path="/SelectTester" element={<SelectTester />} />
           <Route path="/details/:id" element={<GameDetails2 />} />
           <Route path="/Gamestotest" element={<Gamestotest />} />

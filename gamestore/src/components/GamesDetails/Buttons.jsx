@@ -1,12 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { SendToStore, Reject, Accept } from "./ActionButtons";
+import { Sendtotest, Reject, Accept,Sendtolibrare } from "./ActionButtons";
 
 function Buttons({ game }) {
   const navigate = useNavigate();
 
-  const handleSendToStore = async () => {
-    await SendToStore(game.id);
+  const handlSendtotest = async () => {
+    await Sendtotest(game.id);
     navigate("/Gamestotest");
   };
 
@@ -14,6 +14,10 @@ function Buttons({ game }) {
     await Reject(game.id);
     navigate(`/ComparePage/${game.id}`, { state: { status: "reject" } });
   };
+const SendToLibrary = async () => {
+  await Sendtolibrare(game.id);
+  navigate("/MyLibrary");
+};
 
   const handleAccept = async () => {
     await Accept(game.id);
@@ -21,14 +25,13 @@ function Buttons({ game }) {
     //   state: { status: "accept" }
     // });
   };
-
-  const lastVersion =
-    game.versions && game.versions.length > 0
-      ? game.versions[game.versions.length - 1]
-      : null;
-
+  // console.log(game['game_versions']['triage_record']['id'])
+  // const lastVersion =
+  //   game.versions && game.versions.length > 0
+  //     ? game.versions[game.versions.length - 1]
+  //     : null;
   const buttonClass =
-    "w-full md:w-40 py-3 rounded-xl font-semibold text-white " +
+    "w-full  py-3 rounded-xl font-semibold text-white " +
     "transition-all duration-300 hover:scale-105 hover:shadow-lg";
 
   if (game.status === "uploaded") {
@@ -42,10 +45,10 @@ function Buttons({ game }) {
         </button>
 
         <button
-          onClick={handleSendToStore}
+          onClick={handlSendtotest}
           className={`${buttonClass} bg-green-500 hover:bg-green-600`}
         >
-          Send to Store
+          Send to test
         </button>
       </div>
     );
@@ -61,7 +64,8 @@ function Buttons({ game }) {
 
         <button
           onClick={() =>
-            navigate(`/NotesPage/${lastVersion?.triage_record?.id}`)
+           navigate(`/NotesPage/${game.game_versions?.[0]?.triage_record?.id}`)
+
           }
           className={`${buttonClass} bg-cyan-500 hover:bg-cyan-600`}
         >
@@ -78,7 +82,7 @@ function Buttons({ game }) {
     );
   } else if (game.status === "testing") {
     return (
-      <div className="flex flex-wrap gap-4 mt-6 max-w-md mx-auto justify-center">
+      <div className="grid grid-cols-2 gap-6 mt-6 max-w-xl mx-auto ">
         <button
           onClick={handleReject}
           className={`${buttonClass} bg-red-500 hover:bg-red-600`}
@@ -87,15 +91,18 @@ function Buttons({ game }) {
         </button>
 
         <button
-          onClick={handleSendToStore}
-          className={`${buttonClass} bg-green-500 hover:bg-green-600`}
+          onClick={handlSendtotest}
+          className={`${buttonClass} bg-purple-600-500 hover:bg-purple-600`}
         >
           Download
         </button>
         <button
           onClick={() =>
-            navigate(`/TesterNotesPage/${lastVersion?.Tester_records?.id}`)
-          }
+navigate(`/TesterNotesPage/${game.id}`, {
+  state: {
+    game: game
+  }
+})   }
           className={`${buttonClass} bg-cyan-500 hover:bg-cyan-600`}
         >
           Add Notes
@@ -106,11 +113,25 @@ function Buttons({ game }) {
         >
           Accept
         </button>
+        
       </div>
     );
+  }else if (game.status === "published") {
+    return(
+            <div className="grid grid-cols-1 gap-6 mt-6 max-w-full mx-auto ">
+
+   <button
+  onClick={SendToLibrary}
+  className={`${buttonClass} bg-green-600 hover:bg-green-300`}
+>
+  Download
+</button>
+</div>
+    );
+
   }
 
-  return null;
+  
 }
 
 export default Buttons;

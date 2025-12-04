@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BaseUrl } from "../BaseUrl";
 
 export default function TesterNotesPage() {
-  const { id } = useParams(); 
+  const location = useLocation();
   const navigate = useNavigate();
+  const { game } = location.state;
+
+  const testRecordId = game?.game_versions?.[0]?.test_record?.id;
 
   const [form, setForm] = useState({
     final_main_story_hours: "",
@@ -12,96 +15,107 @@ export default function TesterNotesPage() {
     final_notes: "",
   });
 
-  const handleSubmit = async () => {
-    try {
-      const res = await fetch(
-        `${BaseUrl}/api/tester/testrecord/${id}/`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        }
-      );
+  const [tasks, setTasks] = useState(
+    game.tasks?.map((task) => ({
+      id: task.id,
+      status: Boolean(task.status), 
+      name: task.name,
+    })) || []
+  );
 
-      if (!res.ok) throw new Error("Failed to save notes");
+  const handleSubmit = async () => {
+    const formattedTasks = tasks.map((task) => ({
+      id: task.id,
+      status: task.status, 
+    }));
+
+    const Notes = {
+      ...form,
+      tasks: formattedTasks,
+    };
+
+
+    const res = await fetch(
+      `${BaseUrl}/api/tester/testrecord/${testRecordId}/`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Notes),
+      }
+    );
+
+    if (res.ok) {
+      console.log("Data saved successfully!");
       navigate(-1);
-    } catch (err) {
-      console.error(err);
+    } else {
+      const errorText = await res.text();
+      console.error("Error saving notes:", errorText);
       alert("Error saving notes");
     }
   };
 
   return (
-    <div
-      className="min-h-screen w-full flex justify-center items-start py-14 relative overflow-hidden 
-      bg-gradient-to-br from-[#020617] via-[#0a1a33] to-[#10254a]"
-    >
-      <div
-        className="w-full max-w-xl bg-white/20 backdrop-blur-xl 
-        border border-white/20 p-8 rounded-2xl transition-all duration-500
-        animate-fadeInGlass space-y-8"
-      >
-        <h1 className="text-4xl font-black text-center 
-        bg-gradient-to-r from-blue-300 to-cyan-300 
-        text-transparent bg-clip-text drop-shadow tracking-wide">
-          Final Tester Notes
-        </h1>
+    <div className="text-white p-6 max-w-2xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4">Final Tester Notes</h2>
 
-        <div className="space-y-6">
-          <div>
-            <p className="text-cyan-200 mb-2 font-bold">Main Story (Hours)</p>
-            <input
-              type="number"
-              className="w-full p-3 bg-white/20 backdrop-blur-xl border 
-              border-white/20 rounded-xl focus:border-cyan-400 
-              outline-none text-white transition-all duration-300"
-              value={form.final_main_story_hours}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  final_main_story_hours: e.target.value,
-                })
-              }
-            />
-          </div>
+      <div className="space-y-3">
+        <input
+          type="number"
+          placeholder="Main Story Hours"
+          className="bg-gray-800 p-3 w-full rounded"
+          value={form.final_main_story_hours}
+          onChange={(e) =>
+            setForm({ ...form, final_main_story_hours: e.target.value })
+          }
+        />
 
-          <div>
-            <p className="text-cyan-200 mb-2 font-bold">Category Type</p>
-            <input
-              type="number"
-              className="w-full p-3 bg-white/20 backdrop-blur-xl border 
-              border-white/20 rounded-xl focus:border-cyan-400 outline-none 
-              text-white transition-all duration-300"
-              value={form.final_category_type}
-              onChange={(e) =>
-                setForm({ ...form, final_category_type: e.target.value })
-              }
-            />
-          </div>
+        <input
+          type="number"
+          placeholder="Category Type"
+          className="bg-gray-800 p-3 w-full rounded"
+          value={form.final_category_type}
+          onChange={(e) =>
+            setForm({ ...form, final_category_type: e.target.value })
+          }
+        />
 
-          <div>
-            <p className="text-cyan-200 mb-2 font-bold">Notes</p>
-            <textarea
-              className="w-full p-3 h-32 bg-white/20 backdrop-blur-xl 
-              border border-white/20 rounded-xl focus:border-cyan-400 
-              outline-none text-white transition-all duration-300 resize-none"
-              value={form.final_notes}
-              onChange={(e) =>
-                setForm({ ...form, final_notes: e.target.value })
-              }
-            />
-          </div>
-        </div>
-
-        <button
-          onClick={handleSubmit}
-          className="w-full py-3 rounded-xl font-bold text-lg text-black
-          bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 
-          hover:to-cyan-500 transition-all duration-300 active:scale-95"
-        >
-          Save Notes
-        </button>
+        <textarea
+          placeholder="Final Notes"
+          className="bg-gray-800 p-3 w-full rounded h-28"
+          value={form.final_notes}
+          onChange={(e) =>
+            setForm({ ...form, final_notes: e.target.value })
+          }
+        />
       </div>
+
+      <ul className="space-y-3 mb-6">
+        {tasks.map((task, index) => (
+          <li
+            key={task.id}
+            className="flex justify-between p-3 bg-gray-700 rounded"
+          >
+            <span>{task.name}</span>
+            <input
+              type="checkbox"
+              className="w-5 h-5 accent-green-400"
+              checked={task.status} 
+              onChange={(e) => {
+                const newTasks = [...tasks];
+                newTasks[index].status = e.target.checked; 
+                setTasks(newTasks);
+              }}
+            />
+          </li>
+        ))}
+      </ul>
+
+      <button
+        onClick={handleSubmit}
+        className="mt-6 w-full bg-blue-500 p-3 rounded font-bold"
+      >
+        Save Notes
+      </button>
     </div>
   );
 }

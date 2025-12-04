@@ -9,7 +9,7 @@ export default function TesterList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${BaseUrl}/api/braintester/games/${id}/uploaded`)
+    fetch(`${BaseUrl}/api/braintester/games/testing?tester_id=${id}`)
       .then((res) => res.json())
       .then((data) => {
         setTesterGames(data.games || []);

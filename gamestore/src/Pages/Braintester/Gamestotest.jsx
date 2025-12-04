@@ -12,6 +12,7 @@ const Brainlist = () => {
       .then(res => res.json())
       .then(data => {
         setGames(data.games); 
+        console.log(data)
       })
       .catch(err => console.error("Error fetching games:", err));
   }, []);

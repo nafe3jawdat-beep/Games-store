@@ -2,9 +2,9 @@ import React from "react";
 import Buttons from "./Buttons";
 import{BaseUrl} from "../../Pages/BaseUrl";
 
-export default function GameInfo({ game }) {
+export default function GameInfo({ game,from }) {
   if (!game) return null;
-  
+  // console.log(game.tasks)
   return (
     <div className="max-w-6xl mx-auto w-full px-6 py-10">
       <div className="grid grid-cols-1 md:grid-cols-3  gap-10">
@@ -65,7 +65,7 @@ export default function GameInfo({ game }) {
           </div>
 
        <div className="">
-  <Buttons game={game} />
+  <Buttons game={game} from={from} />
 </div>
 
         </div>

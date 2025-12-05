@@ -106,6 +106,7 @@ export default function AddGame() {
           <h2 className="font-semibold mb-3 text-lg">Tasks</h2>
 
           {tasks.map((task, index) => (
+            
             <div
               key={index}
               className="bg-[#0f172a] p-3 rounded-lg mb-3 grid gap-3 sm:grid-cols-3 sm:gap-4"

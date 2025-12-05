@@ -20,18 +20,20 @@ const Games = () => {
 
 
 
-const handleDetails = (game) => {
+const handleDetails = (game, from) => {
   navigate(`/details/${game.id}`, {
     state: {
-      status: game.status, 
-    }
+      from: from,  
+      status: game.status,
+    },
   });
 };
 
 
+
   return (
     <div className="p-5">
-      {<Gamelist games={games} onDetails={handleDetails} />}
+<Gamelist games={games} onDetails={(game) => handleDetails(game, "store")} />
     </div>
   );
 };

@@ -58,6 +58,14 @@ export default function SideBar({ open, setOpen }) {
             <Users size={20} />
             <span className="text-lg font-medium">Tester List</span>
           </Link>
+            <Link
+            to="/AddGame"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg
+                       hover:bg-cyan-500/20 hover:text-cyan-300 transition-all duration-200"
+          >
+        
+            <span className="text-lg font-medium">Add Game</span>
+          </Link>
         </nav>
       </div>
     </>

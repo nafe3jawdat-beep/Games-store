@@ -8,8 +8,6 @@ import TesterStore from "./Pages/Braintester/TesterStore";
 import NotesPage from "./Pages/Braintester/NotesPage";
 import SelectTester from "./Pages/Braintester/SelectTester";
 import TesterList from "./Pages/Braintester/TesterList";
-import ComparePage from "./Pages/Tester/ComparePage";
-import FinishedGames from "./Pages/Tester/FinishedGames";
 import AddGame from "./Pages/Developer/AddGame";
 import TesterNotesPage from "./Pages/Tester/TesterNotesPage";
 import SideBar from "./components/SideBar";
@@ -43,8 +41,6 @@ function AppWrapper() {
           <Route path="/Gamestotest" element={<Gamestotest />} />
           <Route path="/TesterStore" element={<TesterStore />} />
           <Route path="/TesterList/:id" element={<TesterList />} />
-          <Route path="/ComparePage" element={<ComparePage />} />
-          <Route path="/FinishedGames" element={<FinishedGames />} />
         </Routes>
       </div>
     </>

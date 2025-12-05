@@ -1,5 +1,5 @@
 import React from "react";
-import {BaseUrl} from "../../Pages/BaseUrl";
+import { BaseUrl } from "../../Pages/BaseUrl";
 
 export default function GameCard({ game, onDetails }) {
   return (
@@ -32,19 +32,17 @@ export default function GameCard({ game, onDetails }) {
           {/* <p className="text-green-600 font-bold mt-2">{game.price}$</p> */}
         </div>
 
-
-     <button
-  onClick={() => onDetails(game)}
-  className="
+        <button
+          onClick={() => onDetails(game)}
+          className="
     w-full py-2 mt-3 rounded-md text-sm font-medium text-white
     bg-gradient-to-r from-indigo-500 to-purple-500
     hover:from-indigo-600 hover:to-purple-600
     transition-all duration-300
   "
->
-  التفاصيل
-</button>
-
+        >
+          details
+        </button>
       </div>
     </div>
   );

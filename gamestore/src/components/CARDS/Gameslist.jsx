@@ -9,12 +9,15 @@ const Gamelist = ({ games, onDetails }) => {
   const [titleQuery, setTitleQuery] = useState("");
   const [categoryQuery, setCategoryQuery] = useState("");
 
-  const filteredGames = (Array.isArray(games) ? games : []).filter((game) => {
-    const title = game.title?.toLowerCase() || "";
-    const category = game.category?.name || "";
+  const safeGames = Array.isArray(games) ? games : [];
+
+  const filteredGames = safeGames.filter((game) => {
+    const title = game.title?.toLowerCase() ?? "";
+    const category = game.category?.name ?? "";
+
     return (
       title.includes(titleQuery.toLowerCase()) &&
-      (categoryQuery === "" || category === categoryQuery)
+      (!categoryQuery || category === categoryQuery)
     );
   });
 
@@ -67,9 +70,8 @@ const Gamelist = ({ games, onDetails }) => {
         </div>
       </motion.div>
 
-<main className="flex-1 h-full overflow-y-auto px-4 md:px-8 py-6 md:py-8">
-
-<motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 justify-items-end ml-20">
+      <main className="flex-1 h-full overflow-y-auto px-4 md:px-8 py-6 md:py-8">
+        <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 justify-items-end ml-20">
           <AnimatePresence>
             {filteredGames.map((game) => (
               <motion.div

@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Sendtotest, Reject, Accept,Sendtolibrare } from "./ActionButtons";
+import { Sendtotest, Reject, Accept,Sendtolibrare,Check} from "./ActionButtons";
 
-function Buttons({ game }) {
+function Buttons({ game,from}) {
   const navigate = useNavigate();
 
   const handlSendtotest = async () => {
@@ -18,18 +18,13 @@ const SendToLibrary = async () => {
   await Sendtolibrare(game.id);
   navigate("/MyLibrary");
 };
+const Checkd = async () => {
+  await Check(game.id);
+};
 
   const handleAccept = async () => {
     await Accept(game.id);
-    // navigate(`/ComparePage/${game.id}`, {
-    //   state: { status: "accept" }
-    // });
-  };
-  // console.log(game['game_versions']['triage_record']['id'])
-  // const lastVersion =
-  //   game.versions && game.versions.length > 0
-  //     ? game.versions[game.versions.length - 1]
-  //     : null;
+  }
   const buttonClass =
     "w-full  py-3 rounded-xl font-semibold text-white " +
     "transition-all duration-300 hover:scale-105 hover:shadow-lg";
@@ -117,21 +112,31 @@ navigate(`/TesterNotesPage/${game.id}`, {
       </div>
     );
   }else if (game.status === "published") {
-    return(
-            <div className="grid grid-cols-1 gap-6 mt-6 max-w-full mx-auto ">
+  return (
+    <div className="grid grid-cols-1 gap-6 mt-6 max-w-full mx-auto ">
 
-   <button
-  onClick={SendToLibrary}
-  className={`${buttonClass} bg-green-600 hover:bg-green-300`}
->
-  Download
-</button>
-</div>
-    );
+      {from === "store" && (
+        <button
+          onClick={SendToLibrary}
+          className={`${buttonClass} bg-green-600 hover:bg-green-300`}
+        >
+          Download
+        </button>
+      )}
 
-  }
+      {from === "library" && (
+        <button
+          onClick={Checkd}
+          className={`${buttonClass} bg-blue-600 hover:bg-blue-400`}
+        >
+          Check
+        </button>
+      )}
 
-  
+    </div>
+  );
+}
+
 }
 
 export default Buttons;

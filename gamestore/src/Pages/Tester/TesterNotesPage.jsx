@@ -17,42 +17,43 @@ export default function TesterNotesPage() {
 
   const [tasks, setTasks] = useState(
     game.tasks?.map((task) => ({
-      id: task.id,
-      status: Boolean(task.status), 
+    id: parseInt(task.id) || 0,
+      status: (task.status), 
       name: task.name,
     })) || []
   );
 
-  const handleSubmit = async () => {
-    const formattedTasks = tasks.map((task) => ({
-      id: task.id,
-      status: task.status, 
-    }));
+ const handleSubmit = async () => {
+  const formattedTasks = tasks.map((task) => ({
+    id: task.id,
+    status: task.status ? "accepted" : "rejected",
+  }));
 
-    const Notes = {
-      ...form,
-      tasks: formattedTasks,
-    };
-
-
-    const res = await fetch(
-      `${BaseUrl}/api/tester/testrecord/${testRecordId}/`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(Notes),
-      }
-    );
-
-    if (res.ok) {
-      console.log("Data saved successfully!");
-      navigate(-1);
-    } else {
-      const errorText = await res.text();
-      console.error("Error saving notes:", errorText);
-      alert("Error saving notes");
-    }
+  const Notes = {
+    ...form,
+    tasks: formattedTasks,
   };
+
+  const res = await fetch(
+    `${BaseUrl}/api/tester/testrecord/${testRecordId}/`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(Notes),
+    }
+  );
+
+  console.log("Response Status:", res.status);
+  const text = await res.text();
+  console.log("Response Body:", text);
+
+  if (res.ok) {
+    navigate(-1);
+  } else {
+    alert("Error saving notes");
+  }
+};
+
 
   return (
     <div className="text-white p-6 max-w-2xl mx-auto">

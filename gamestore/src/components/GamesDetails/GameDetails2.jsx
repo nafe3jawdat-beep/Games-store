@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import {useParams,useLocation } from "react-router-dom";
+// import React from "react";
 import GameInfo from "./GameInfo";
 import BrainNotes from "./BrainNotes";
 import SelectTester from "../../Pages/Braintester/SelectTester";
@@ -11,32 +12,43 @@ export default function GamesDetails2() {
   const { status, tester_id } = location.state || {};
   const [game, setGames] = useState(null);
 
-  useEffect(() => {
-    if (!id || !status) return;
+  const { state } = useLocation();
+  const from = state?.from;  
 
-    const url =
-      status === "testing" && tester_id
-        ? `${BaseUrl}/api/braintester/games/${id}/${status}?tester_id=${tester_id}`
-        : `${BaseUrl}/api/player/games/${id}/${status}`;
+useEffect(() => {
+  if (!id || !status) return;
 
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) =>
-        setGames(data && data.game ? data.game : false)
-      )
-      .catch(() => setGames(false));
-  }, [id, status, tester_id]);
+  const url =
+    status === "testing" && tester_id
+      ? `${BaseUrl}/api/tester/games/${id}/${status}?tester_id=${tester_id}`
+      : `${BaseUrl}/api/player/games/${id}/${status}`;
 
-  if (game === null)
-    return <div className="text-white text-center py-10">جاري التحميل...</div>;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      // console.log("API DATA =>", data);       
+      // console.log("DATA.GAME =>", data.game);
+      setGames(data.game || null);
+      
+    })
+    .catch((err) => {
+      console.error("Fetch Error:", err);
+      setGames(false);
+    });
+
+}, [id, status, tester_id]);
+if (!game) return <div className="text-white text-center py-10">Loading...</div>;
+
 
   if (game === false)
-    return <div className="text-white text-center py-10">لم يتم العثور على اللعبة</div>;
+    return (
+      <div className="text-white text-center py-10">
+        لم يتم العثور على اللعبة
+      </div>
+    );
 
   const lastVersion =
-    game?.versions?.length > 0
-      ? game.versions[game.versions.length - 1]
-      : null;
+    game?.versions?.length > 0 ? game.versions[game.versions.length - 1] : null;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f172a] to-[#1e293b] text-white flex flex-col">
@@ -52,7 +64,7 @@ export default function GamesDetails2() {
 
       <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-8">
-          <GameInfo game={game} />
+          <GameInfo game={game} from={from} />
         </div>
       </div>
 

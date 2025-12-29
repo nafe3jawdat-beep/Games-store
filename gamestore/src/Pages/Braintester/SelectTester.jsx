@@ -1,4 +1,4 @@
-import React, {  useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BaseUrl } from "../BaseUrl";
 
 function SelectTester({ gameId }) {
@@ -13,31 +13,31 @@ function SelectTester({ gameId }) {
       })
       .catch(() => setTester([]));
   }, []);
-console.log(gameId)
-const assignToTester = async () => {
-  if (!selectTester) return alert("Please select a tester");
+  const assignToTester = async () => {
+    if (!selectTester) return alert("Please select a tester");
 
-  try {
-    const res = await fetch(`${BaseUrl}/api/braintester/triage/${gameId}/accepted?tester_id=${selectTester}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      // body: JSON.stringify({ testerId: selectTester }),
-    });
+    try {
+      const res = await fetch(
+        `${BaseUrl}/api/braintester/triage/${gameId}/accepted?tester_id=${selectTester}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-    console.log("Status:", res.status);
+      console.log("Status:", res.status);
 
-    const data = await res.json().catch(() => null);
-    console.log("Response data:", data);
+      const data = await res.json().catch(() => null);
+      console.log("Response data:", data);
 
-    if (!res.ok) throw new Error("Failed to assign tester");
+      if (!res.ok) throw new Error("Failed to assign tester");
 
-    alert("Game assigned to tester successfully!");
-  } catch (err) {
-    console.error("Error:", err);
-    alert("Failed to assign tester");
-  }
-};
-
+      alert("Game assigned to tester successfully!");
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Failed to assign tester");
+    }
+  };
 
   const sendToQeue = async () => {
     await fetch(
@@ -46,7 +46,6 @@ const assignToTester = async () => {
         method: "PUT",
       }
     );
-    alert("تم وضع اللعبة في المخزن لحين توفر Tester");
   };
 
   return (
@@ -64,12 +63,11 @@ const assignToTester = async () => {
         </div>
       ) : (
         <div className="space-y-4">
-       <select
-  value={selectTester}
-  onChange={(e) => {
-    setSelectTester(e.target.value);
-  }}
-            
+          <select
+            value={selectTester}
+            onChange={(e) => {
+              setSelectTester(e.target.value);
+            }}
             className="w-full p-3 rounded-xl bg-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
           >
             <option value="">Select Tester</option>

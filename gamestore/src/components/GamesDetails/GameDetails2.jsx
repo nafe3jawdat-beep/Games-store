@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {useParams,useLocation } from "react-router-dom";
-// import React from "react";
+import { useParams, useLocation } from "react-router-dom";
 import GameInfo from "./GameInfo";
 import BrainNotes from "./BrainNotes";
 import SelectTester from "../../Pages/Braintester/SelectTester";
@@ -13,32 +12,29 @@ export default function GamesDetails2() {
   const [game, setGames] = useState(null);
 
   const { state } = useLocation();
-  const from = state?.from;  
+  const from = state?.from;
 
-useEffect(() => {
-  if (!id || !status) return;
+  useEffect(() => {
+    if (!id || !status) return;
 
-  const url =
-    status === "testing" && tester_id
-      ? `${BaseUrl}/api/tester/games/${id}/${status}?tester_id=${tester_id}`
-      : `${BaseUrl}/api/player/games/${id}/${status}`;
+    const url =
+      status === "testing" && tester_id
+        ? `${BaseUrl}/api/tester/games/${id}/${status}?tester_id=${tester_id}`
+        : `${BaseUrl}/api/player/games/${id}/${status}`;
+        // : `${BaseUrl}/api/braintester/games/${id}/${status}`;
 
-  fetch(url)
-    .then((res) => res.json())
-    .then((data) => {
-      // console.log("API DATA =>", data);       
-      // console.log("DATA.GAME =>", data.game);
-      setGames(data.game || null);
-      
-    })
-    .catch((err) => {
-      console.error("Fetch Error:", err);
-      setGames(false);
-    });
-
-}, [id, status, tester_id]);
-if (!game) return <div className="text-white text-center py-10">Loading...</div>;
-
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setGames(data.game || null);
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+        setGames(false);
+      });
+  }, [id, status, tester_id]);
+  if (!game)
+    return <div className="text-white text-center py-10">Loading...</div>;
 
   if (game === false)
     return (

@@ -38,11 +38,15 @@ export const Accept = async (gameId) => {
 export const Sendtolibrare = async (gameId) => {
   try {
     const player_id = { player_id: 6 };
-    await fetch(`${BaseUrl}/api/player/games/${gameId}/players`, {
+   const res = await fetch(`${BaseUrl}/api/player/games/${gameId}/players`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(player_id),
     });
+    console.log("res",res.status)
+    const text =await res.text();
+        console.log("Response Body:", text);
+  
   } catch (err) {
     console.error(err);
   }

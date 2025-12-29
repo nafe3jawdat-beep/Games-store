@@ -66,6 +66,7 @@ export default function SideBar({ open, setOpen }) {
         
             <span className="text-lg font-medium">Add Game</span>
           </Link>
+
         </nav>
       </div>
     </>

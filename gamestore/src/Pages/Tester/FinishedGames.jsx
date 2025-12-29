@@ -35,3 +35,48 @@
 // }
 
 // export default FinishedGames;
+//  {from === "library" ? (
+//                 <ul className="space-y-2">
+//                   {game.tasks.map((task) => (
+//                     <li
+//                       key={task.id}
+//                       className="p-3 bg-gray-700 rounded flex justify-between"
+//                     >
+//                       <div>
+//                         <p className="font-semibold">{task.name}</p>
+//                         <p className="text-sm text-gray-300">
+//                           {task.description}
+//                         </p>
+//                         <input
+//                           type="checkbox"
+//                           checked={task.achieved === 1}
+//                           readOnly
+//                           className="w-5 h-5 accent-green-400"
+//                         />
+//                       </div>
+//                       <span className="text-green-400 font-bold">
+//                         {task.reward}
+//                       </span>
+//                     </li>
+//                   ))}
+//                 </ul>
+//               ) : (
+//                 <ul className="space-y-3">
+//                   {game.tasks.map((task) => (
+//                     <li
+//                       key={task.id}
+//                       className="bg-[#1e293b] hover:bg-[#334155] transition rounded-lg p-4 shadow-lg"
+//                     >
+//                       <h4 className="font-bold text-indigo-300 mb-1">
+//                         {task.name}
+//                       </h4>
+//                       <p className="text-gray-400 text-sm">
+//                         {task.description}
+//                       </p>
+//                       <p>reward: {task.reward}</p>
+//                     </li>
+//                   ))}
+//                 </ul>
+//               )}
+//             </>
+//           )}

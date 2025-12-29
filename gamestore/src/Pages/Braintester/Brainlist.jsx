@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import React from "react";
 import { useNavigate } from "react-router-dom";
 import Gamelist from "../../components/CARDS/Gameslist";
 import {BaseUrl} from "../BaseUrl";
@@ -17,6 +16,7 @@ const Brainlist = () => {
       .catch((err) => console.error("Error fetching games:", err));
       
   }, []);
+
 
 const handleDetails = (game) => {
   navigate(`/details/${game.id}`, {

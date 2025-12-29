@@ -1,47 +1,42 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {BaseUrl} from "../BaseUrl";
+import { BaseUrl } from "../BaseUrl";
 
 export default function NotesPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-  is_game: false,
-  category_valid: false,
-  main_story_estimate_hours: "",
-  main_story_confidence: "",
-  notes: "",
-});
-
+    is_game: false,
+    category_valid: false,
+    main_story_estimate_hours: "",
+    main_story_confidence: "",
+    notes: "",
+  });
 
   const handleSubmit = async () => {
-  const updatedForm = {
-    ...form,
-    main_story_estimate_hours: parseInt(form.main_story_estimate_hours) || 0,
-    main_story_confidence: parseInt(form.main_story_confidence) || 0,
+    const updatedForm = {
+      ...form,
+      main_story_estimate_hours: parseInt(form.main_story_estimate_hours) || 0,
+      main_story_confidence: parseInt(form.main_story_confidence) || 0,
+    };
+
+    try {
+      const res = await fetch(`${BaseUrl}/api/braintester/triage/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedForm),
+      });
+
+      if (!res.ok) throw new Error("Failed to save notes");
+
+      navigate(-1);
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Error saving notes");
+      navigate(-1);
+    }
   };
-
-  try {
-    const res = await fetch(`${BaseUrl}/api/braintester/triage/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedForm),
-    });
-
-    // console.log("Status:", res.status);
-    // const data = await res.json().catch(() => null);
-    // console.log("Response data:", data);
-
-    if (!res.ok) throw new Error("Failed to save notes");
-
-    navigate(-1);
-  } catch (err) {
-    console.error("Error:", err);
-    alert("Error saving notes");
-    navigate(-1);
-  }
-};
 
   return (
     <div

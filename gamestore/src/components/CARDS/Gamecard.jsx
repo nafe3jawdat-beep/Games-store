@@ -12,9 +12,9 @@ export default function GameCard({ game, onDetails }) {
     >
       <div className="h-[140px] overflow-hidden">
         <img
-          src={`${BaseUrl}/images/games/${game.image}`}
+          src={game.image}
           alt={game.title}
-          className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+          className="w-full h-full object-center transition-transform duration-500 hover:scale-110"
         />
       </div>
 

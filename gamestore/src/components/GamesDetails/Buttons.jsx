@@ -111,6 +111,20 @@ navigate(`/TesterNotesPage/${game.id}`, {
         
       </div>
     );
+      } if (
+  game.status === "testing" &&
+  game.versions?.[0]?.test_record?.tester_id
+) {
+return (
+  <div className="grid grid-cols-1 gap-6 mt-6 max-w-full mx-auto ">
+    <button
+      onClick={handlSendtotest}
+      className={`${buttonClass} bg-green-600 hover:bg-green-300`}
+    >
+      Download
+    </button>
+  </div>
+);
   }else if (game.status === "published") {
   return (
     <div className="grid grid-cols-1 gap-6 mt-6 max-w-full mx-auto ">

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect,useState } from "react";
+import { useParams,useNavigate  } from "react-router-dom";
 import Card from "../../components/CARDS/Card";
 import { BaseUrl } from "../BaseUrl";
 
@@ -16,6 +16,7 @@ export default function TesterList() {
       })
       .catch((err) => console.error("Error fetching games:", err));
   }, [id]);
+
 
   return (
     <div className="min-h-screen w-full bg-[#0f172a] p-6">
@@ -35,7 +36,10 @@ export default function TesterList() {
               ]}
               onClick={() => 
                 navigate(`/details/${game.id}`, {
-                  state: { status: game.status, tester_id: id },
+state: {
+  status: game.status,
+  tester_id: game.versions?.[0]?.test_record?.tester_id,
+},
                 })
               }
             />

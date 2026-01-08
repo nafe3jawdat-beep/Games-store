@@ -1,41 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Gamelist from "../../components/CARDS/Gameslist";
 import { BaseUrl } from "../BaseUrl";
-const Gamestotest = () => {
+function MyLibrary() {
   const [games, setGames] = useState([]);
-
   const navigate = useNavigate();
+useEffect(() => {
   const token = localStorage.getItem("token");
 
-useEffect(() => {
-  if (!token) return;
-
-fetch(`${BaseUrl}/api/games/triage_pending/`, { 
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": `Bearer ${token}` 
-  }
-})
+  fetch(`${BaseUrl}/api/library/games`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": `Bearer ${token}` 
+    }
+  })
     .then((res) => {
+      console.log("Status Code:", res.status);
+      
       if (!res.ok) {
         throw new Error(`Server error: ${res.status}`);
       }
       return res.json();
     })
     .then((data) => {
-      console.log("البيانات القادمة من السيرفر:", data); 
-      
+      console.log("Fetched Data:", data); 
       setGames(data.games || data); 
     })
     .catch((err) => console.error("Error fetching games:", err));
     
-}, [token]); 
-  const handleDetails = (game) => {
+}, []);
+
+  const handleDetails = (game, from) => {
     navigate(`/details/${game.id}`, {
       state: {
+        from: from,
         status: game.status,
       },
     });
@@ -43,9 +44,11 @@ fetch(`${BaseUrl}/api/games/triage_pending/`, {
 
   return (
     <div className="p-5">
-      {<Gamelist games={games} onDetails={handleDetails} />}
+      <Gamelist
+        games={games}
+        onDetails={(game) => handleDetails(game, "library")}
+      />
     </div>
   );
-};
-
-export default Gamestotest;
+}
+export default MyLibrary;

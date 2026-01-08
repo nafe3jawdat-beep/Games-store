@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-// import React from "react";
 import { useNavigate } from "react-router-dom";
 import Gamelist from "../../components/CARDS/Gameslist";
 import {BaseUrl} from "../BaseUrl";
 
-const Brainlist = () => {
+const TesterList = () => {
   const [games, setGames] = useState([]);
   const navigate = useNavigate();
 
 useEffect(() => {
   const token = localStorage.getItem("token");
 
-  fetch(`${BaseUrl}/api/games/uploaded`, {
+  fetch(`${BaseUrl}/api/games/testing`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -48,4 +47,4 @@ const handleDetails = (game) => {
   );
 };
 
-export default Brainlist;
+export default TesterList;

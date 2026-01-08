@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { BaseUrl } from "../BaseUrl";
 import { useNavigate } from "react-router-dom";
 import Gamelist from "../../components/CARDS/Gameslist";
-import { BaseUrl } from "../BaseUrl";
-const Gamestotest = () => {
-  const [games, setGames] = useState([]);
-
+function MyGames() {
+  const [games, setgames] = useState([]);
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
 
 useEffect(() => {
-  if (!token) return;
+  const token = localStorage.getItem("token");
 
-fetch(`${BaseUrl}/api/games/triage_pending/`, { 
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": `Bearer ${token}` 
-  }
-})
+  fetch(`${BaseUrl}/api/games/specific_developer`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": `Bearer ${token}` 
+    }
+  })
     .then((res) => {
       if (!res.ok) {
         throw new Error(`Server error: ${res.status}`);
@@ -26,13 +24,12 @@ fetch(`${BaseUrl}/api/games/triage_pending/`, {
       return res.json();
     })
     .then((data) => {
-      console.log("البيانات القادمة من السيرفر:", data); 
-      
-      setGames(data.games || data); 
+      setgames(data.games || data); 
     })
     .catch((err) => console.error("Error fetching games:", err));
     
-}, [token]); 
+}, []);
+
   const handleDetails = (game) => {
     navigate(`/details/${game.id}`, {
       state: {
@@ -46,6 +43,6 @@ fetch(`${BaseUrl}/api/games/triage_pending/`, {
       {<Gamelist games={games} onDetails={handleDetails} />}
     </div>
   );
-};
+}
 
-export default Gamestotest;
+export default MyGames;

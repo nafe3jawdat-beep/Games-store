@@ -6,20 +6,32 @@ import { BaseUrl } from "../BaseUrl";
 function MyLibrary() {
   const [games, setGames] = useState([]);
   const navigate = useNavigate();
+useEffect(() => {
+  const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    const playerId = 6;
-
-    fetch(`${BaseUrl}/api/player/library/games?player_id=${playerId}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => setGames(data.games))
-      .catch((err) => console.error("Error fetching games:", err));
-  }, []);
+  fetch(`${BaseUrl}/api/library/games`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": `Bearer ${token}` 
+    }
+  })
+    .then((res) => {
+      console.log("Status Code:", res.status);
+      
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then((data) => {
+      console.log("Fetched Data:", data); 
+      setGames(data.games || data); 
+    })
+    .catch((err) => console.error("Error fetching games:", err));
+    
+}, []);
 
   const handleDetails = (game, from) => {
     navigate(`/details/${game.id}`, {

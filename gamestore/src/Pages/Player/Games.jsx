@@ -8,14 +8,30 @@ const Games = () => {
   const [games, setGames] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch(`${BaseUrl}/api/player/games/published`)
-      .then((res) => res.json())
-      .then((data) => {
-        setGames(data.games);
-      })
-      .catch((err) => console.error("Error fetching games:", err));
-  }, []);
+
+useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  fetch(`${BaseUrl}/api/games/published`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": `Bearer ${token}` 
+    }
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then((data) => {
+      setGames(data.games || data); 
+    })
+    .catch((err) => console.error("Error fetching games:", err));
+    
+}, []);
 
   const handleDetails = (game, from) => {
     navigate(`/details/${game.id}`, {

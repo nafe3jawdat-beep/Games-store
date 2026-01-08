@@ -12,7 +12,7 @@ export default function GameCard({ game, onDetails }) {
     >
       <div className="h-[140px] overflow-hidden">
         <img
-          src={game.image}
+          src={game.image_url}
           alt={game.title}
           className="w-full h-full object-center transition-transform duration-500 hover:scale-110"
         />
@@ -29,7 +29,7 @@ export default function GameCard({ game, onDetails }) {
           </h3>
           <p>{game.short_description}</p>
           <p className="text-gray-500 text-sm mt-1">{game.category?.name}</p>
-          {/* <p className="text-green-600 font-bold mt-2">{game.price}$</p> */}
+          <p className="text-green-600 font-bold mt-2">{game.price}$</p>
         </div>
 
         <button

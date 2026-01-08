@@ -6,24 +6,29 @@ function MyGames() {
   const [games, setgames] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchgame = async () => {
-      try {
-        const res = await fetch(
-          `${BaseUrl}/api/developer/games/published?developer_id=3`
-        );
-        const data = await res.json();
-        setgames(data.game);
+useEffect(() => {
+  const token = localStorage.getItem("token");
 
-        console.log("respos :", res.status);
-        const text = await res.text();
-        console.log("Respones :", text);
-      } catch (err) {
-        console.error("Error fetching games:", err);
+  fetch(`${BaseUrl}/api/games/specific_developer`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": `Bearer ${token}` 
+    }
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
       }
-    };
-    fetchgame();
-  }, []);
+      return res.json();
+    })
+    .then((data) => {
+      setgames(data.games || data); 
+    })
+    .catch((err) => console.error("Error fetching games:", err));
+    
+}, []);
 
   const handleDetails = (game) => {
     navigate(`/details/${game.id}`, {

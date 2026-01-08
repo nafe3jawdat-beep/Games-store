@@ -4,9 +4,17 @@ import { BaseUrl } from "../BaseUrl";
 function SelectTester({ gameId }) {
   const [testers, setTester] = useState([]);
   const [selectTester, setSelectTester] = useState("");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch(`${BaseUrl}/api/braintester/testers`)
+    fetch(`${BaseUrl}/api/testers`, {
+       method: "GET",
+       headers: {
+         "Content-Type": "application/json",
+         "Accept": "application/json",
+         "Authorization": `Bearer ${token}` 
+       }
+     })
       .then((res) => res.json())
       .then((data) => {
         setTester(data.testers);
@@ -14,19 +22,20 @@ function SelectTester({ gameId }) {
       .catch(() => setTester([]));
   }, []);
   const assignToTester = async () => {
-    if (!selectTester) return alert("Please select a tester");
 
     try {
       const res = await fetch(
-        `${BaseUrl}/api/braintester/triage/${gameId}/accepted?tester_id=${selectTester}`,
+        `${BaseUrl}/api/triage/${gameId}/midacceptorreject?tester_id=${selectTester}&fate=accepted`,
         {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", 
+            "Authorization": `Bearer ${token}`},
         }
       );
 
-      console.log("Status:", res.status);
-
+    console.log("res",res.status)
+    const text =await res.text();
+        console.log("Response Body:", text);
       const data = await res.json().catch(() => null);
       console.log("Response data:", data);
 
@@ -48,6 +57,8 @@ function SelectTester({ gameId }) {
     );
   };
 
+
+
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-slate-800 rounded-2xl shadow-lg text-white">
       <h3 className="text-2xl font-bold mb-4 text-center">Assign Tester</h3>
@@ -58,7 +69,7 @@ function SelectTester({ gameId }) {
             onClick={sendToQeue}
             className="w-full py-3 bg-green-500 hover:bg-green-600 rounded-xl transition-all duration-300"
           >
-            Send to Storage
+            Send to Qeue
           </button>
         </div>
       ) : (
@@ -91,3 +102,4 @@ function SelectTester({ gameId }) {
 }
 
 export default SelectTester;
+

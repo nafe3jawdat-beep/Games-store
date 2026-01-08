@@ -81,9 +81,6 @@ const Gamelist = ({ games, onDetails }) => {
                 animate="show"
                 exit={{ opacity: 0, y: 20 }}
                 layout
-                // className="bg-[#1e293b] w-[350px] p-2 rounded-xl shadow-md border border-transparent
-                //     hover:border-blue-400/60 hover:shadow-blue-900/40
-                //     hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
               >
                 <GameCard game={game} onDetails={onDetails} />
               </motion.div>

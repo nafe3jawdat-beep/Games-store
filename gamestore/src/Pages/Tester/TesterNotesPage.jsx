@@ -39,30 +39,29 @@ export default function TesterNotesPage() {
       ...form,
       tasks: formattedTasks,
     };
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch(
-        `${BaseUrl}/api/testrecord/${testRecordId}/`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` 
- },
-          body: JSON.stringify(Notes),
-        }
-      );
-   console.log("res",res.status)
-    const text =await res.text();
-        console.log("Response Body:", text);
+      const res = await fetch(`${BaseUrl}/api/testrecord/${testRecordId}/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(Notes),
+      });
+      console.log("res", res.status);
+      const text = await res.text();
+      console.log("Response Body:", text);
       const data = await res.json();
 
       if (res.ok) {
-        setMsg(data.message || "Saved successfully!");
+        setMsg(data.message);
         setTimeout(() => {
           navigate(-1);
         }, 1500);
       } else {
-        setMsg(data.message || "Error saving notes");
+        setMsg(data.message);
         setTimeout(() => setMsg(""), 3000);
         setLoading(false);
       }
@@ -75,8 +74,8 @@ export default function TesterNotesPage() {
   };
 
   return (
-    <form 
-      onSubmit={handleSubmit} 
+    <form
+      onSubmit={handleSubmit}
       className="text-white p-6 max-w-2xl mx-auto min-h-screen"
     >
       {msg && (
@@ -84,12 +83,16 @@ export default function TesterNotesPage() {
           {msg}
         </div>
       )}
-      
-      <h2 className="text-2xl font-bold mb-6 text-cyan-300">Final Tester Notes</h2>
+
+      <h2 className="text-2xl font-bold mb-6 text-cyan-300">
+        Final Tester Notes
+      </h2>
 
       <div className="space-y-4 mb-8">
         <div>
-          <label className="block text-sm text-gray-400 mb-1 ml-1">Main Story Hours</label>
+          <label className="block text-sm text-gray-400 mb-1 ml-1">
+            Main Story Hours
+          </label>
           <input
             required
             type="number"
@@ -103,34 +106,48 @@ export default function TesterNotesPage() {
         </div>
 
         <div>
-          <label className="block text-sm text-gray-400 mb-1 ml-1">Category Type</label>
-          <input
+          <label className="block text-sm text-gray-400 mb-1 ml-1">
+            Category Type
+          </label>
+          <select
             required
-            type="number"
-            placeholder="e.g. 1"
-            className="bg-gray-800 p-3 w-full rounded border border-gray-700 focus:border-cyan-500 outline-none transition-all"
+            className="bg-gray-800 p-3 w-full rounded border border-gray-700 focus:border-cyan-500 outline-none transition-all text-white appearance-none"
             value={form.final_category_type}
             onChange={(e) =>
               setForm({ ...form, final_category_type: e.target.value })
             }
-          />
+          >
+            <option value="" disabled>
+              Select Category
+            </option>
+            <option value="1">Action</option>
+            <option value="2">Adventure</option>
+            <option value="3">RPG</option>
+            <option value="4">Puzzle</option>
+            <option value="5">Simulation</option>
+            <option value="6">Strategy</option>
+            <option value="7">Sports</option>
+            <option value="8">Casual</option>
+          </select>
         </div>
 
         <div>
-          <label className="block text-sm text-gray-400 mb-1 ml-1">Final Notes</label>
+          <label className="block text-sm text-gray-400 mb-1 ml-1">
+            Final Notes
+          </label>
           <textarea
             placeholder="Enter your final observations..."
             className="bg-gray-800 p-3 w-full rounded h-28 border border-gray-700 focus:border-cyan-500 outline-none transition-all resize-none"
             value={form.final_notes}
-            onChange={(e) =>
-              setForm({ ...form, final_notes: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, final_notes: e.target.value })}
           />
         </div>
       </div>
 
       <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-3 text-gray-300">Tasks Checklist</h3>
+        <h3 className="text-lg font-semibold mb-3 text-gray-300">
+          Tasks Checklist
+        </h3>
         <ul className="space-y-3">
           {tasks.map((task, index) => (
             <li
@@ -157,9 +174,11 @@ export default function TesterNotesPage() {
         type="submit"
         disabled={loading}
         className={`w-full py-4 rounded-xl font-bold text-lg text-black transition-all duration-300 shadow-lg
-                   ${loading 
-                     ? "opacity-50 cursor-not-allowed bg-gray-400" 
-                     : "bg-gradient-to-r from-blue-500 to-cyan-400 hover:shadow-cyan-500/20 active:scale-95"}`}
+                   ${
+                     loading
+                       ? "opacity-50 cursor-not-allowed bg-gray-400"
+                       : "bg-gradient-to-r from-blue-500 to-cyan-400 hover:shadow-cyan-500/20 active:scale-95"
+                   }`}
       >
         {loading ? "Saving Records..." : "Save Final Notes"}
       </button>

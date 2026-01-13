@@ -54,7 +54,7 @@ const Register = () => {
       });
       const data = await response.json();
 
-      if (!response.ok) throw new Error(data.message || "فشل التسجيل");
+      if (!response.ok) throw new Error(data.message);
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
@@ -64,7 +64,7 @@ const Register = () => {
       else if (userRole === "developer") navigate("/AddGame");
       else navigate("/");
     } catch (error) {
-      setErrors({ api: error.message || "حدث خطأ أثناء التسجيل" });
+      setErrors({ api: error.message });
     } finally {
       setLoading(false);
     }
@@ -94,7 +94,6 @@ const Register = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Username Field */}
           <div className="space-y-1">
             <label className="text-[10px] uppercase text-blue-400/60 font-bold ml-1">Identity</label>
             <input
@@ -108,7 +107,6 @@ const Register = () => {
             {errors.username && <p className="text-red-500 text-[10px] ml-1">{errors.username}</p>}
           </div>
 
-          {/* Account Type Field */}
           <div className="space-y-1">
             <label className="text-[10px] uppercase text-blue-400/60 font-bold ml-1">Account Type</label>
             <select
@@ -122,7 +120,6 @@ const Register = () => {
             </select>
           </div>
 
-          {/* Email Field */}
           <div className="space-y-1">
             <label className="text-[10px] uppercase text-blue-400/60 font-bold ml-1">Email</label>
             <input
@@ -136,7 +133,6 @@ const Register = () => {
             {errors.email && <p className="text-red-500 text-[10px] ml-1">{errors.email}</p>}
           </div>
 
-          {/* Password Fields */}
           <div className="space-y-1">
             <label className="text-[10px] uppercase text-blue-400/60 font-bold ml-1">Password</label>
             <div className="grid grid-cols-2 gap-2">

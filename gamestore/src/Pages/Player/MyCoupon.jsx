@@ -2,47 +2,34 @@ import React, { useEffect, useState } from "react";
 import { BaseUrl } from "../BaseUrl";
 import { Ticket, Clock  } from "lucide-react"; 
 
-const token = () => localStorage.getItem("token");
-console.log("Token value:", token());
 function MyCoupon() {
   const [myCoupons, setMyCoupons] = useState([]);
 
-
 useEffect(() => {
-  const token = localStorage.getItem("token"); 
+  const fetchCoupons = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return console.error("No token found");
 
-  if (!token) {
-    console.error("No token found, redirecting to login...");
-    return;
-  }
+    try {
+      const res = await fetch(`${BaseUrl}/api/coupons/user`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Accept": "application/json"
+        }
+      });
 
-  fetch(`${BaseUrl}/api/coupons/user`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "Authorization": `Bearer ${token}` 
+      if (!res.ok) throw new Error(res.status === 401 ? "Expired" : "Error");
+
+      const data = await res.json();
+      setMyCoupons(data.games ?? data.coupons ?? data);
+      
+    } catch (err) {
+      console.error("Fetch error:", err.message);
     }
-  })
-    .then((res) => {
-      if (res.status === 401) {
-        throw new Error("Your session expired. Please login again.");
-      }
-      if (!res.ok) {
-        throw new Error(`Server error: ${res.status}`);
-      }
-      return res.json();
-    })
-    .then((data) => {
-      console.log("My Purchased Coupons:", data);
-      setMyCoupons(data.games || data.coupons || data); 
-    })
-    .catch((err) => {
-      console.error("Error fetching coupons:", err);
-    });
-    
-}, []);
+  };
 
+  fetchCoupons();
+}, []);
 
   return (
     <div className="p-6 max-w-xl mx-auto text-slate-200 min-h-screen">
@@ -69,9 +56,6 @@ useEffect(() => {
                       <Clock size={14} />
                       <span>Expires: {cp.valid_until || "No Expiry"}</span>
                     </div>
-                  </div>
-                  <div className="bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-full text-xs font-bold border border-cyan-500/20">
-                    Active
                   </div>
                 </div>
 

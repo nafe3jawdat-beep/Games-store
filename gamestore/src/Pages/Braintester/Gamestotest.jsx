@@ -26,9 +26,9 @@ fetch(`${BaseUrl}/api/games/triage_pending/`, {
       return res.json();
     })
     .then((data) => {
-      console.log("البيانات القادمة من السيرفر:", data); 
+      console.log(data); 
       
-      setGames(data.games || data); 
+      setGames(data.games); 
     })
     .catch((err) => console.error("Error fetching games:", err));
     

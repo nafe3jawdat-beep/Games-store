@@ -64,11 +64,7 @@ export default function Player_List() {
                 image={player.image}
                 title={player.name}
                 fields={[
-                  { label: "Email", value: player.email },
-                  {
-                    label: "Joined At",
-                    value: new Date(player.created_at).toLocaleDateString(),
-                  },
+                  { label: "Email", value: player.email },                
                 ]}
                 onClick={() => {}}
               />

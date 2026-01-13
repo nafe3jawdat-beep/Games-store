@@ -75,7 +75,7 @@ export default function AddGame() {
 
       const data = await res.json();
 
-      setmsg(data.message || "Operation successful");
+      setmsg(data.message );
 
       setTimeout(() => {
         navgigate("/Developer/MyGames");
@@ -256,7 +256,7 @@ export default function AddGame() {
           {loading ? (
             <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
           ) : (
-            "uploded"
+            "upload Game"
           )}
         </button>
       </form>

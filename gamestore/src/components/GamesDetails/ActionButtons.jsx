@@ -79,22 +79,19 @@ export const Sendtolibrare = async (gameId, couponId) => {
       }),
     });
 
-    console.log("حالة الرد من السيرفر (Status):", res.status);
 
     if (!res.ok) {
-      const errorData = await res.text();
-      console.error("فشل الطلب. تفاصيل الخطأ:", errorData);
-      // alert(`حدث خطأ: ${res.status}`);
+      const error = await res.text();
+      console.error( error);
       return;
     }
 
     const data = await res.json();
-    console.log("الرد النهائي من السيرفر:", data);
-    // alert("تمت العملية بنجاح!");
+    console.log( data);
     return data;
 
   } catch (err) {
-    console.error("خطأ في الشبكة أو في معالجة البيانات:", err);
+    console.error(err);
   }
 };
 

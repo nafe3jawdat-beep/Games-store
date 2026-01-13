@@ -9,9 +9,9 @@ const Gamelist = ({ games, onDetails }) => {
   const [titleQuery, setTitleQuery] = useState("");
   const [categoryQuery, setCategoryQuery] = useState("");
 
-  const safeGames = Array.isArray(games) ? games : [];
+  // const safeGames = Array.isArray(games) ? games : [];
 
-  const filteredGames = safeGames.filter((game) => {
+  const filteredGames = games?.filter((game) => {
     const title = game.title?.toLowerCase() ?? "";
     const category = game.category?.name ?? "";
 

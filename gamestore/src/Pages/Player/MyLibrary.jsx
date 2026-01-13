@@ -45,7 +45,10 @@ useEffect(() => {
   return (
     <div className="p-5">
       <Gamelist
-        games={games}
+      games={games.map((game) => {
+    const {_price, ...rest } = game; 
+    return rest; 
+})}
         onDetails={(game) => handleDetails(game, "library")}
       />
     </div>

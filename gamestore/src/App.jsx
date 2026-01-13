@@ -26,7 +26,7 @@ import MyLibrary from "./Pages/Player/MyLibrary";
 import Coupon from "./Pages/Player/Coupon";
 import MyCoupon from "./Pages/Player/MyCoupon";
 import Login from "./Pages/Login/Login";
-import SimplePayment from "./Pages/Player/PaymentModal";
+import Payment from  "./Pages/Player/Payment" ;
 import Register from "./Pages/Login/Register";
 import Edit from "./Pages/Admin/Edit";
 import Brain_List from "./Pages/Admin/Brain_List";
@@ -58,7 +58,7 @@ function AppWrapper() {
             <Route path="/AddGame" element={<AddGame />} />
             <Route path="/MyGames" element={<MyGames />} />
             <Route path="/MyLibrary" element={<MyLibrary />} />
-            <Route path="/SimplePayment" element={<SimplePayment />} />
+            <Route path="/Payment" element={<Payment />} />
             <Route path="/NotificationsPage" element={<NotificationsPage />} />
             <Route path="/Edit" element={<Edit />} /> 
             <Route path="/Edit/:id" element={<Edit />} />{" "}
@@ -71,7 +71,7 @@ function AppWrapper() {
             <Route path="/MyCoupon" element={<MyCoupon />} />
             <Route path="/BrainNotes" element={<BrainNotes />} />
             <Route path="/Games" element={<Games />} />
-            <Route path="/TesterNotesPage" element={<TesterNotesPage />} />
+            {/* <Route path="/TesterNotesPage" element={<TesterNotesPage />} /> */}
             <Route path="/Brainlist" element={<Brainlist />} />
             <Route path="/NotesPage/:id" element={<NotesPage />} />
             <Route path="/TesterNotesPage/:id" element={<TesterNotesPage />} />

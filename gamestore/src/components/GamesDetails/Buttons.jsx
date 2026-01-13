@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Sendtotest, Reject, Accept,  Check } from "./ActionButtons";
-import { FaGamepad } from "react-icons/fa"; 
+import { Sendtotest, Reject, Accept, Check } from "./ActionButtons";
+import { FaGamepad } from "react-icons/fa";
 
-function Buttons({ game, from,onTasksUpdate,couponId }) {
+function Buttons({ game, from, onTasksUpdate, couponId }) {
   const navigate = useNavigate();
-  const triage_record_id= game?.game_versions?.[0]?.triage_record?.id
+  const triage_record_id = game?.game_versions?.[0]?.triage_record?.id;
 
   const [loading, setLoading] = useState({
     sendToTest: false,
@@ -14,54 +14,72 @@ function Buttons({ game, from,onTasksUpdate,couponId }) {
     sendToLibrary: false,
     check: false,
   });
-const userData = JSON.parse(localStorage.getItem("user") || "{}");
-const currentRole = userData?.roles?.[0];
-  console.log("Current Role:", currentRole);
+  const userData = JSON.parse(localStorage.getItem("user") || "{}");
+  const Role = userData?.roles?.[0];
 
   const handlSendtotest = async () => {
-    setLoading(prev => ({ ...prev, sendToTest: true }));
-    await Sendtotest(game.id);
-    navigate("/Gamestotest");
-    setLoading(prev => ({ ...prev, sendToTest: false }));
+    setLoading(true);
+    try {
+      await Sendtotest(game.id);
+      navigate("/Gamestotest");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReject = async () => {
-    setLoading(prev => ({ ...prev, reject: true }));
-    await Reject(triage_record_id);
-    setLoading(prev => ({ ...prev, reject: false }));
+    setLoading(true);
+
+    try {
+      await Reject(triage_record_id);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-const SendToLibrary = () => {
-    
-    navigate("/SimplePayment", { 
-      state: { 
-        gameId: game.id, 
-        price: game.price, 
+  const SendToLibrary = () => {
+    navigate("/Payment", {
+      state: {
+        gameId: game.id,
+        price: game.price,
         couponId: couponId,
-        gameName: game.name 
-      } 
+        gameName: game.name,
+      },
     });
   };
 
   const Checkd = async () => {
-    setLoading(prev => ({ ...prev, check: true }));
-const newTasks = await Check(game.id);  
-    
-    if (newTasks) {
-      onTasksUpdate(newTasks); 
-    }    setLoading(prev => ({ ...prev, check: false }));
+    setLoading(true);
+
+    try {
+      const newTasks = await Check(game.id);
+      if (newTasks) onTasksUpdate(newTasks);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAccept = async () => {
-    setLoading(prev => ({ ...prev, accept: true }));
-    await Accept(game.id);
-    setLoading(prev => ({ ...prev, accept: false }));
+    setLoading(true);
+    try {
+      await Accept(game.id);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const buttonClass =
     "w-full py-3 rounded-xl font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg flex justify-center items-center gap-2";
 
-  const renderButtonContent = (label, isLoading) => (
+  const Btn = (label, isLoading) => (
     <>
       {isLoading && <FaGamepad className="animate-spin" />}
       {label}
@@ -74,17 +92,17 @@ const newTasks = await Check(game.id);
         <button
           onClick={handleReject}
           className={`${buttonClass} bg-red-500 hover:bg-red-600`}
-          disabled={loading.reject || loading.sendToTest}
+          disabled={loading.reject}
         >
-          {renderButtonContent("Reject", loading.reject)}
+          {Btn("Reject", loading.reject)}
         </button>
 
         <button
           onClick={handlSendtotest}
           className={`${buttonClass} bg-green-500 hover:bg-green-600`}
-          disabled={loading.reject || loading.sendToTest}
+          disabled={loading.sendToTest}
         >
-          {renderButtonContent("Send to test", loading.sendToTest)}
+          {Btn("Send to test", loading.sendToTest)}
         </button>
       </div>
     );
@@ -112,58 +130,58 @@ const newTasks = await Check(game.id);
           className={`${buttonClass} bg-red-500 hover:bg-red-600`}
           disabled={loading.reject}
         >
-          {renderButtonContent("Reject", loading.reject)}
+          {Btn("Reject", loading.reject)}
         </button>
       </div>
     );
   } else if (game.status === "testing") {
-  if (currentRole === "brain_tester") {
-    return null; 
-  }
-  return (
-    <div className="grid grid-cols-2 gap-6 mt-6 max-w-xl mx-auto">
-      <button 
-        onClick={handleReject} 
-        className={`${buttonClass} bg-red-500 hover:bg-red-600`}
-        disabled={loading.reject || loading.accept}
-      >
-        {renderButtonContent("Reject", loading.reject)}
-      </button>
+    if (Role === "brain_tester") {
+      return null;
+    }
+    return (
+      <div className="grid grid-cols-2 gap-6 mt-6 max-w-xl mx-auto">
+        <button
+          onClick={handleReject}
+          className={`${buttonClass} bg-red-500 hover:bg-red-600`}
+          disabled={loading.reject}
+        >
+          {Btn("Reject", loading.reject)}
+        </button>
 
-      <button 
-        onClick={() => console.log("Downloading...")} 
-        className={`${buttonClass} bg-purple-600 hover:bg-purple-700`}
-      >
-        Download
-      </button>
+        <button
+          onClick={() => console.log("Downloading...")}
+          className={`${buttonClass} bg-purple-600 hover:bg-purple-700`}
+        >
+          Download
+        </button>
 
-      <button 
-        onClick={() => navigate(`/TesterNotesPage/${game.id}`, { state: { game: game } })} 
-        className={`${buttonClass} bg-cyan-500 hover:bg-cyan-600`}
-      >
-        Add Notes
-      </button>
+        <button
+          onClick={() =>
+            navigate(`/TesterNotesPage/${game.id}`, { state: { game: game } })
+          }
+          className={`${buttonClass} bg-cyan-500 hover:bg-cyan-600`}
+        >
+          Add Notes
+        </button>
 
-      <button 
-        onClick={handleAccept} 
-        className={`${buttonClass} bg-emerald-400 hover:bg-emerald-600`}
-        disabled={loading.accept || loading.reject}
-      >
-        {renderButtonContent("Accept", loading.accept)}
-      </button>
-    </div>
-  );
-}
-  
-  else if (game.status === "published") {
+        <button
+          onClick={handleAccept}
+          className={`${buttonClass} bg-emerald-400 hover:bg-emerald-600`}
+          disabled={loading.accept}
+        >
+          {Btn("Accept", loading.accept)}
+        </button>
+      </div>
+    );
+  } else if (game.status === "published") {
     return (
       <div className="grid grid-cols-1 gap-6 mt-6 max-w-full mx-auto ">
         {from === "store" && (
-       <button
-            onClick={SendToLibrary} 
+          <button
+            onClick={SendToLibrary}
             className={`${buttonClass} bg-green-600 hover:bg-green-700`}
           >
-             Buy & Download
+            Buy & Download
           </button>
         )}
 
@@ -173,7 +191,7 @@ const newTasks = await Check(game.id);
             className={`${buttonClass} bg-blue-600 hover:bg-blue-400`}
             disabled={loading.check}
           >
-            {renderButtonContent("Check", loading.check)}
+            {Btn("Check", loading.check)}
           </button>
         )}
       </div>

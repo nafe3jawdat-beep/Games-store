@@ -22,47 +22,43 @@ function Coupon() {
       .then((res) => res.json())
 
       .then((data) =>
-        setCoupons(Array.isArray(data) ? data : data.coupons || [])
+        setCoupons(data?.coupons || [])
       )
       .catch(() => setCoupons([]));
   }, []);
 
-  const syncBalance = (newBalance) => {
-    setPoints(newBalance);
-    localStorage.setItem(
-      "user",
-      JSON.stringify({ ...getUser(), points: newBalance })
-    );
-    window.dispatchEvent(new Event("storage"));
-  };
-
-  const buyCoupon = async (id) => {
+const syncBalance = (newBalance) => {
+    setPoints(newBalance); 
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    user.points = newBalance;
+    localStorage.setItem("user", JSON.stringify(user));
+};
+const buyCoupon = async (id) => {
     setLoading(true);
-    setMsg({ text: "", type: "" });
+    // setMsg({ text: "", type: "" });
 
     try {
       const res = await fetch(`${BaseUrl}/api/coupons/buy`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${getToken()}`,
+          "Accept": "application/json",
+          "Authorization": `Bearer ${getToken()}`,
         },
         body: JSON.stringify({ coupon_id: id }),
       });
 
       const data = await res.json();
-      console.log(data);
 
       if (!res.ok) {
-        throw new Error(data.message);
+        throw new Error(data.message || "حدث خطأ ما"); 
       }
 
       syncBalance(data.points);
-      setMsg({ text: "تم الشراء بنجاح!", type: "success" });
+      setMsg({ text: data.message, type: "success" });
       setSelectedId(null);
+
     } catch (err) {
-      console.log("رسالة الخطأ:", err.message);
       setMsg({ text: err.message, type: "error" });
     } finally {
       setLoading(false);
@@ -123,7 +119,7 @@ function Coupon() {
                   <div className="pt-4 border-t border-slate-700 flex flex-col gap-4">
                     <div className="flex justify-between text-sm">
                       <span className="text-slate-400">
-                        Your Wallet: ${points}
+                        Your Wallet: {points}
                       </span>
                       <span className="text-white">Payable: ${cp.price}</span>
                     </div>

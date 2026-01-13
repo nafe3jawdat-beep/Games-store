@@ -7,20 +7,19 @@ export default function TesterStore() {
   const [testers, setTesters] = useState([]);
   const navigate = useNavigate();
 
-
-useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
 
     fetch(`${BaseUrl}/api/testers`, {
-      headers: { "Authorization": `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
-      .then((data) => setTesters(data.testers )) 
+      .then((data) => setTesters(data.testers))
       .catch((err) => console.error(err));
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-[#0f172a] lg:pl-[260px]">
+    <div className="min-h-screen bg-[#0f172a] p-6 lg:ml-64 transition-all duration-300">
       <h1 className="text-3xl font-bold text-center text-cyan-400 border-b border-cyan-700 pb-3">
         Testers List
       </h1>
@@ -30,10 +29,8 @@ useEffect(() => {
           <Card
             key={tester.id}
             image={tester.image}
-            title={tester.name } 
-            fields={[
-              { label: "Email", value: tester.email },
-            ]}
+            title={tester.name}
+            fields={[{ label: "Email", value: tester.email }]}
             onClick={() => navigate(`/BTesterList/${tester.id}`)}
           />
         ))}

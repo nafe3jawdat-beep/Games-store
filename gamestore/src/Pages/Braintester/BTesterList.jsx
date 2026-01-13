@@ -23,16 +23,16 @@ export default function BTesterList() {
         return res.json();
       })
       .then((data) => {
-        console.log("البيانات:", data);
+        console.log(data);
         setTesterGames(data.games ?? data);
       })
       .catch((err) => {
-        console.error("Error fetching games:", err);
+        console.error("Error ", err);
       });
   }, [id]);
 
   return (
-    <div className="min-h-screen  bg-[#0f172a] p-6">
+    <div className="min-h-screen bg-[#0f172a] p-6 lg:ml-64 transition-all duration-300">
       <h1 className="text-3xl font-bold text-cyan-400 mb-6 border-b border-cyan-700 pb-3">
         Tester Games List
       </h1>

@@ -8,7 +8,6 @@ export default function AdminCoupons() {
   const [coupons, setCoupons] = useState([]);
   const [show, setShow] = useState(false);
   const [editId, setEditId] = useState(null);
-
   const [form, setForm] = useState({
     name: "",
     discount_percentage: "",
@@ -54,13 +53,13 @@ export default function AdminCoupons() {
     loadCoupons();
   };
 
-  const edit = (c) => {
-    setEditId(c.id);
+  const edit = (coupon) => {
+    setEditId(coupon.id);
     setForm({
-      name: c.name,
-      discount_percentage: c.discount_percentage,
-      price: c.price,
-      valid_until: c.valid_until || "",
+      name: coupon.name,
+      discount_percentage: coupon.discount_percentage,
+      price: coupon.price,
+      valid_until: coupon.valid_until || "",
     });
     setShow(true);
   };
@@ -93,32 +92,32 @@ export default function AdminCoupons() {
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {coupons.map(c => (
+        {coupons.map(coupon => (
           <div
-            key={c.id}
+            key={coupon.id}
             className="bg-slate-900/50 border border-slate-800 p-5 rounded-2xl flex justify-between items-center"
           >
             <div>
-              <h3 className="font-bold text-white">{c.name}</h3>
+              <h3 className="font-bold text-white">{coupon.name}</h3>
               <p className="text-cyan-400 font-bold">
-                {c.discount_percentage}% — ${c.price}
+                {coupon.discount_percentage}% — ${coupon.price}
               </p>
-              {c.valid_until && (
+              {coupon.valid_until && (
                 <p className="text-xs text-slate-500">
-                  Until: {c.valid_until}
+                  Until: {coupon.valid_until}
                 </p>
               )}
             </div>
 
             <div className="flex gap-2">
               <button
-                onClick={() => edit(c)}
+                onClick={() => edit(coupon)}
                 className="p-2 bg-slate-800 text-cyan-400 rounded-lg hover:bg-slate-700"
               >
                 <Edit2 size={18} />
               </button>
               <button
-                onClick={() => remove(c.id)}
+                onClick={() => remove(coupon.id)}
                 className="p-2 bg-slate-800 text-red-400 rounded-lg hover:bg-slate-700"
               >
                 <Trash2 size={18} />

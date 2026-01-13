@@ -20,45 +20,43 @@ import { BaseUrl } from "../Pages/BaseUrl";
 export default function SideBar({ open, setOpen }) {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [points, setpoints] = useState(user.points || 0);
-  const [hasUnread, setHasUnread] = useState(false);
+  const [hasUnread, setHasUnread] = useState(true);
   const [notifCount, setNotifCount] = useState(0);
   const currentRole = user?.roles?.[0];
   const token = localStorage.getItem("token");
 
-  const authHeaders = token ? { Authorization: `Bearer ${token}` } : null;
-
   const checkNotifications = async () => {
-    if (!authHeaders) return;
+    if (!token) return;
 
     try {
       const res = await fetch(`${BaseUrl}/api/notifications`, {
-        headers: authHeaders,
+        headers: { Authorization: `Bearer ${token}` },
       });
-      const { notifications = [] } = await res.json();
+      const notifications = await res.json();
 
       const count = notifications.length;
       const lastSeen = Number(localStorage.getItem("last_notif_count") || 0);
 
       setNotifCount(count);
       setHasUnread(count > lastSeen);
-    } catch (e) {
-      console.log("Notif error", e);
+    } catch (err) {
+      console.log("Notif error", err);
     }
   };
 
   const syncBalance = async () => {
-    if (!authHeaders) return;
+    if (!token) return;
 
     try {
       const res = await fetch(`${BaseUrl}/api/points`, {
-        headers: authHeaders,
+        headers: { Authorization: `Bearer ${token}` },
       });
-      const { points = 0 } = await res.json();
+      const points = await res.json();
 
       setpoints(points);
       localStorage.setItem("user", JSON.stringify({ ...user, points }));
-    } catch (e) {
-      console.log("Sync error", e);
+    } catch (err) {
+      console.log("Sync error", err);
     }
   };
 
@@ -66,18 +64,16 @@ export default function SideBar({ open, setOpen }) {
     syncBalance();
     checkNotifications();
 
-    const interval = setInterval(checkNotifications, 50000);
-
-    const onStorage = () => {
-      const { points = 0 } = JSON.parse(localStorage.getItem("user")) || {};
-      setpoints(points);
+    const updateSidebar = () => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      setpoints(user?.points || 0);
     };
-
-    window.addEventListener("storage", onStorage);
+    window.addEventListener("click", updateSidebar);
+    const interval = setInterval(checkNotifications, 50000);
 
     return () => {
       clearInterval(interval);
-      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("click", updateSidebar);
     };
   }, []);
 
@@ -118,9 +114,11 @@ export default function SideBar({ open, setOpen }) {
               </p>
               <div className="flex items-baseline gap-1">
                 <span className="text-xl font-black text-white">
-                  ${Number(points).toLocaleString()}
+                  {Number(points).toLocaleString()}
                 </span>
-                <span className="text-[10px] text-cyan-400 font-bold">USD</span>
+                <span className="text-[10px] text-cyan-400 font-bold">
+                  points
+                </span>
               </div>
             </div>
           )}
@@ -159,59 +157,62 @@ export default function SideBar({ open, setOpen }) {
             </div>
           )}
 
-          {currentRole === "developer" && (
-            <div className="mb-4">
-              <p className="text-[11px] font-black text-slate-500 uppercase px-3 mb-2 tracking-tighter">
-                Developer Panel
-              </p>
-              <Link
-                to="/AddGame"
-                onClick={() => setOpen(false)}
-                className={linkStyle}
-              >
-                <PlusCircle size={20} className={iconStyle} />{" "}
-                <span className="text-lg font-medium">Add Game</span>
-              </Link>
-              <Link
-                to="/MyGames"
-                onClick={() => setOpen(false)}
-                className={linkStyle}
-              >
-                <Library size={20} className={iconStyle} />{" "}
-                <span className="text-lg font-medium">My Games</span>
-              </Link>
+          {/* {currentRole === "developer" && ( */}
+          <div className="mb-4">
+            <p className="text-[11px] font-black text-slate-500 uppercase px-3 mb-2 tracking-tighter">
+              Developer Panel
+            </p>
+            <Link
+              to="/AddGame"
+              onClick={() => setOpen(false)}
+              className={linkStyle}
+            >
+              <PlusCircle size={20} className={iconStyle} />{" "}
+              <span className="text-lg font-medium">Add Game</span>
+            </Link>
+            <Link
+              to="/MyGames"
+              onClick={() => setOpen(false)}
+              className={linkStyle}
+            >
+              <Library size={20} className={iconStyle} />{" "}
+              <span className="text-lg font-medium">My Games</span>
+            </Link>
 
-              <Link
-                to="/NotificationsPage"
-                onClick={() => {
-                  setOpen(false);
-                  setHasUnread(false);
-                  localStorage.setItem("last_notif_count", notifCount);
-                }}
-                className={`${linkStyle} relative`}
-              >
-                <Bell size={20} className={iconStyle} />
-                <span className="text-lg font-medium">Notifications</span>
+            <Link
+              to="/NotificationsPage"
+              onClick={() => {
+                setOpen(false);
+                setHasUnread(false);
+                localStorage.setItem("last_notif_count", notifCount);
+              }}
+              className={`${linkStyle} relative`}
+            >
+              <Bell size={20} className={iconStyle} />
+              <span className="text-lg font-medium">Notifications</span>
 
-                {hasUnread && (
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500 shadow-[0_0_8px_red]"></span>
-                  </span>
-                )}
-              </Link>
-            </div>
-          )}
+              {hasUnread && (
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500 shadow-[0_0_8px_red]"></span>
+                </span>
+              )}
+            </Link>
+          </div>
 
           {currentRole === "admin" && (
             <div className="mb-4">
               <p className="text-[11px] font-black text-slate-500 uppercase px-3 mb-2 tracking-tighter">
                 Admin Panel
               </p>
-        <Link to="/Brainlist" onClick={() => setOpen(false)} className={linkStyle}>
-      <Brain size={20} className={iconStyle} /> 
-      <span className="text-lg font-medium">Brain List</span>
-    </Link>
+              <Link
+                to="/Brainlist"
+                onClick={() => setOpen(false)}
+                className={linkStyle}
+              >
+                <Brain size={20} className={iconStyle} />
+                <span className="text-lg font-medium">Brain List</span>
+              </Link>
               <Link
                 to="/Tester_List"
                 onClick={() => setOpen(false)}
@@ -228,7 +229,7 @@ export default function SideBar({ open, setOpen }) {
                 <Ticket size={20} className={iconStyle} />{" "}
                 <span className="text-lg font-medium"> Coupons</span>
               </Link>
-                  <Link
+              <Link
                 to="/Player_List"
                 onClick={() => setOpen(false)}
                 className={linkStyle}
@@ -236,7 +237,7 @@ export default function SideBar({ open, setOpen }) {
                 <Swords size={20} className={iconStyle} />{" "}
                 <span className="text-lg font-medium"> Player_List</span>
               </Link>
-                     <Link
+              <Link
                 to="/Player_List"
                 onClick={() => setOpen(false)}
                 className={linkStyle}
@@ -276,7 +277,7 @@ export default function SideBar({ open, setOpen }) {
                 <Box size={20} className={iconStyle} />{" "}
                 <span className="text-lg font-medium">Store Coupons</span>
               </Link>
-                 <Link
+              <Link
                 to="/MyCoupon"
                 onClick={() => setOpen(false)}
                 className={linkStyle}

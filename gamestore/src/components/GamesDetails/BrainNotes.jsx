@@ -16,7 +16,6 @@ export default function BrainNotes({ versions }) {
               Brain Tester Notes
             </h3>
           </div>
-          {/* <span className="text-xl grayscale group-hover:grayscale-0 transition-all duration-500">🧠</span> */}
         </div>
 
         <div className="grid grid-cols-2 gap-y-6 gap-x-4">

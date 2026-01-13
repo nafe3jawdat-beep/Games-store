@@ -60,7 +60,7 @@ function SelectCoupon({ onSelect }) {
               <option value="" className="bg-slate-900">Apply a coupon code...</option>
               {coupons.map((c) => (
                 <option key={c.id} value={c.id} className="bg-slate-900 py-2">
-                  🎁 {c.name}
+                   {c.name}
                 </option>
               ))}
             </select>

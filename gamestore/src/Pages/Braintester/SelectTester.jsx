@@ -36,8 +36,8 @@ function SelectTester({ gameId }) {
     console.log("res",res.status)
     const text =await res.text();
         console.log("Response Body:", text);
-      const data = await res.json().catch(() => null);
-      console.log("Response data:", data);
+      // const data = await res.json().catch(() => null);
+      // console.log("Response data:", data);
 
       if (!res.ok) throw new Error("Failed to assign tester");
 

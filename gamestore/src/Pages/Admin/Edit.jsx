@@ -4,21 +4,21 @@ import { BaseUrl } from "../BaseUrl";
 import { ArrowLeft, Save, Loader2 } from "lucide-react";
 
 export default function Edit() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
 
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
+  const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
-    account_type: "brain_tester", 
+    account_type: "brain_tester",
   });
 
   useEffect(() => {
     if (id && state?.user) {
-      setFormData({
+      setForm({
         name: state.user.name || "",
         email: state.user.email || "",
         password: "",
@@ -39,13 +39,13 @@ export default function Edit() {
         method: method,
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-          account_type: formData.account_type, 
+          name: form.name,
+          email: form.email,
+          password: form.password,
+          account_type: form.account_type,
         }),
       });
 
@@ -54,10 +54,10 @@ export default function Edit() {
         navigate(-1);
       } else {
         const data = await res.json();
-        alert(data.message || "Error happened");
+        alert(data.message);
       }
     } catch (error) {
-      alert(error.message || "Network Error");
+      alert(error.message);
     } finally {
       setLoading(false);
     }
@@ -65,7 +65,10 @@ export default function Edit() {
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white p-8 lg:pl-[280px]">
-      <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-slate-400 mb-6">
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 text-slate-400 mb-6"
+      >
         <ArrowLeft size={20} /> Back
       </button>
 
@@ -77,37 +80,45 @@ export default function Edit() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {!id && (
             <div>
-              <label className="block text-[10px] uppercase text-blue-400/60 font-bold mb-2">Account Type</label>
+              <label className="block text-[10px] uppercase text-blue-400/60 font-bold mb-2">
+                Account Type
+              </label>
               <select
                 className="w-full bg-[#0a101e] border border-[#1e293b] p-3 rounded-xl text-sm outline-none text-white cursor-pointer"
-                value={formData.account_type}
-                onChange={(e) => setFormData({ ...formData, account_type: e.target.value })}
+                value={form.account_type}
+                onChange={(e) =>
+                  setForm({ ...form, account_type: e.target.value })
+                }
               >
                 <option value="brain_tester">Brain Tester</option>
-                <option value="tester">Normal Tester</option>
+                <option value="tester"> Tester</option>
               </select>
             </div>
           )}
 
           <div>
-            <label className="block text-[10px] uppercase text-blue-400/60 font-bold mb-2">Full Name</label>
+            <label className="block text-[10px] uppercase text-blue-400/60 font-bold mb-2">
+              Full Name
+            </label>
             <input
               type="text"
               required
               className="w-full bg-[#0a101e] border border-[#1e293b] p-3 rounded-xl text-sm outline-none"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
           </div>
 
           <div>
-            <label className="block text-[10px] uppercase text-blue-400/60 font-bold mb-2">Email</label>
+            <label className="block text-[10px] uppercase text-blue-400/60 font-bold mb-2">
+              Email
+            </label>
             <input
               type="email"
               required
               className="w-full bg-[#0a101e] border border-[#1e293b] p-3 rounded-xl text-sm outline-none"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
           </div>
 
@@ -119,8 +130,8 @@ export default function Edit() {
               type="password"
               required={!id}
               className="w-full bg-[#0a101e] border border-[#1e293b] p-3 rounded-xl text-sm outline-none"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
             />
           </div>
 
@@ -129,7 +140,7 @@ export default function Edit() {
             disabled={loading}
             className="w-full bg-gradient-to-r from-[#4477f3] to-[#9156e5] py-4 rounded-xl font-bold text-sm uppercase tracking-widest transition-all disabled:opacity-50"
           >
-            {loading ? <Loader2 className="animate-spin" /> : <Save size={20} />}
+            {loading && <Loader2 className="animate-spin" />}
             {id ? "Update User" : "Register User"}
           </button>
         </form>

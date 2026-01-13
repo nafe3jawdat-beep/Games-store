@@ -3,7 +3,7 @@ import Buttons from "./Buttons";
 import { BaseUrl } from "../../Pages/BaseUrl";
 
 export default function GameInfo({ game, from, onTasksUpdate,couponId }) {
-  console.log(couponId);
+  // console.log(couponId);
 
   if (!game) return null;
   return (

@@ -5,7 +5,7 @@ import { FaGamepad } from "react-icons/fa";
 
 function Buttons({ game, from, onTasksUpdate, couponId }) {
   const navigate = useNavigate();
-  const triage_record_id = game?.game_versions?.[0]?.triage_record?.id;
+  // const triage_record_id = game?.game_versions?.[0]?.triage_record?.id;
 
   const [loading, setLoading] = useState({
     sendToTest: false,
@@ -18,26 +18,25 @@ function Buttons({ game, from, onTasksUpdate, couponId }) {
   const Role = userData?.roles?.[0];
 
   const handlSendtotest = async () => {
-    setLoading(true);
+  setLoading({ ...loading, sendToTest: true });
     try {
       await Sendtotest(game.id);
       navigate("/Gamestotest");
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+    setLoading({ ...loading, sendToTest: false });
     }
   };
 
   const handleReject = async () => {
-    setLoading(true);
-
+    setLoading({ ...loading, reject: true });
     try {
-      await Reject(triage_record_id);
+      await Reject(game.id);
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+      setLoading({ ...loading, reject: false });
     }
   };
 
@@ -53,7 +52,7 @@ function Buttons({ game, from, onTasksUpdate, couponId }) {
   };
 
   const Checkd = async () => {
-    setLoading(true);
+  setLoading({ ...loading, check: true });
 
     try {
       const newTasks = await Check(game.id);
@@ -61,18 +60,18 @@ function Buttons({ game, from, onTasksUpdate, couponId }) {
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+    setLoading({ ...loading, check: false });
     }
   };
 
   const handleAccept = async () => {
-    setLoading(true);
+  setLoading({ ...loading, handleAccept: true });
     try {
       await Accept(game.id);
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+    setLoading({ ...loading, handleAccept: false });
     }
   };
 

@@ -1,19 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
-  Menu,
-  X,
-  Home,
-  Box,
-  Users,
-  PlusCircle,
-  Gamepad2,
-  Library,
-  LogOut,
-  Bell,
-  Brain,
-  Ticket,
-  Swords,
+  Menu, X,Home,Box,
+  Users,PlusCircle, Gamepad2,Library,
+  LogOut,Bell,Brain,Ticket,Swords,
 } from "lucide-react";
 import { BaseUrl } from "../Pages/BaseUrl";
 
@@ -40,7 +30,7 @@ export default function SideBar({ open, setOpen }) {
       setNotifCount(count);
       setHasUnread(count > lastSeen);
     } catch (err) {
-      console.log("Notif error", err);
+      // console.log("Notif error", err);
     }
   };
 
@@ -114,7 +104,7 @@ export default function SideBar({ open, setOpen }) {
               </p>
               <div className="flex items-baseline gap-1">
                 <span className="text-xl font-black text-white">
-                  {Number(points).toLocaleString()}
+                  {Number(points?.points || 0).toLocaleString()}
                 </span>
                 <span className="text-[10px] text-cyan-400 font-bold">
                   points
@@ -157,7 +147,7 @@ export default function SideBar({ open, setOpen }) {
             </div>
           )}
 
-          {/* {currentRole === "developer" && ( */}
+          {currentRole === "developer" && (
           <div className="mb-4">
             <p className="text-[11px] font-black text-slate-500 uppercase px-3 mb-2 tracking-tighter">
               Developer Panel
@@ -198,8 +188,9 @@ export default function SideBar({ open, setOpen }) {
                 </span>
               )}
             </Link>
+          
           </div>
-
+          )}
           {currentRole === "admin" && (
             <div className="mb-4">
               <p className="text-[11px] font-black text-slate-500 uppercase px-3 mb-2 tracking-tighter">

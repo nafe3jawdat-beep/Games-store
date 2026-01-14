@@ -10,19 +10,20 @@ export const Sendtotest = async (gameId) => {
         Authorization: `Bearer ${token}`,
       },
     });
-        console.log("res", res.status);
-    const text = await res.text();
-    console.log("Response Body:", text);
+    console.log("res", res.status);
+    //     console.log("res", res.status);
+    // const text = await res.text();
+    // console.log("Response Body:", text);
   } catch (err) {
     console.error(err);
   }
 };
 
-export const Reject = async (triage_record_id) => {
+export const Reject = async (gameId) => {
 
   try {
     const res = await fetch(
-      `${BaseUrl}/api/triage/${triage_record_id}/midacceptorreject?fate=rejected`,
+      `${BaseUrl}/api/games/${gameId}/acceptorreject?game_fate=reject`,
       {
         method: "PUT",
         headers: {

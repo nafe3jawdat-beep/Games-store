@@ -26,7 +26,7 @@ useEffect(() => {
       return res.json();
     })
     .then((data) => {
-      setGames(data.games || data); 
+      setGames(data.games ); 
     })
     .catch((err) => console.error("Error fetching games:", err));
     

@@ -28,7 +28,7 @@ export default function Player_List() {
   }, []);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this player?")) return;
+    // if (!window.confirm("Are you sure you want to delete this player?")) return;
     try {
       const res = await fetch(`${BaseUrl}/api/players/${id}`, {
         method: "DELETE",

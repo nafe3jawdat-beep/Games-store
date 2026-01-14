@@ -13,9 +13,10 @@ function Coupon() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+     const token = localStorage.getItem("token");
     fetch(`${BaseUrl}/api/coupons`, {
       headers: {
-        Authorization: `Bearer ${getToken()}`,
+      "Authorization": `Bearer ${token}`,
         Accept: "application/json",
       },
     })

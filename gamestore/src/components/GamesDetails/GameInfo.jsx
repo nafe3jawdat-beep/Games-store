@@ -33,7 +33,7 @@ export default function GameInfo({ game, from, onTasksUpdate,couponId }) {
                         {task.description}
                       </p>
                       <p className="text-green-400 text-sm mt-1 font-medium">
-                        Reward: ${task.reward}
+                        Reward: {task.reward}
                       </p>
                     </div>
 

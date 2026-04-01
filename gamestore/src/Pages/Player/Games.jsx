@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 // import React from "react";
 import { useNavigate } from "react-router-dom";
 import Gamelist from "../../components/CARDS/Gameslist";
-import {BaseUrl} from "../BaseUrl";
+import { BaseUrl } from "../BaseUrl";
 
-const Brainlist = () => {
+const Games = () => {
   const [games, setGames] = useState([]);
   const navigate = useNavigate();
+
 
 useEffect(() => {
   const token = localStorage.getItem("token");
 
-  fetch(`${BaseUrl}/api/games/uploaded`, {
+  fetch(`${BaseUrl}/api/games/published`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -26,26 +27,29 @@ useEffect(() => {
       return res.json();
     })
     .then((data) => {
-      setGames(data.games ); 
+      setGames(data.games || data); 
     })
     .catch((err) => console.error("Error fetching games:", err));
     
 }, []);
 
-const handleDetails = (game) => {
-  navigate(`/details/${game.id}`, {
-    state: {
-      status: game.status, 
-    }
-  });
-};
-
+  const handleDetails = (game, from) => {
+    navigate(`/details/${game.id}`, {
+      state: {
+        from: from,
+        status: game.status,
+      },
+    });
+  };
 
   return (
     <div className="p-5">
-      {<Gamelist games={games} onDetails={handleDetails} />}
+      <Gamelist
+        games={games}
+        onDetails={(game) => handleDetails(game, "store")}
+      />
     </div>
   );
 };
 
-export default Brainlist;
+export default Games;
